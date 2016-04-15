@@ -252,8 +252,8 @@ public:
 				// Draw the default sphere for collision
 				glPopMatrix();
 				glPushMatrix();
-				glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
-				glutSolidSphere(.5, 20, 20); // the 20's are arbitary
+				//glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+				//glutSolidSphere(.5, 20, 20); // the 20's are arbitary
 				glPopMatrix();
 				//robotArm.draw();
 				myModel.draw();

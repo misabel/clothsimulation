@@ -62,7 +62,7 @@ Cloth::~Cloth() {
 	//delete [] cpList;
 }
 
-void Cloth::drawCloth() {		
+void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, RangeProperty sphereCenterZ) {		
 	
 	for (int i = 0; i < x_num - 1; ++i) {
 		for (int j = 0; j < y_num - 1; ++j) {
@@ -133,6 +133,13 @@ void Cloth::drawCloth() {
 
 	 	}
 	 }
+
+	 // Draw the default sphere for collision
+	glPopMatrix();
+	glPushMatrix();
+	glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+	glutSolidSphere(.5, 20, 20); // the 20's are arbitary
+	glPopMatrix();
 
 
  //    glPointSize(6.0f); // when something get checked, enable it, e

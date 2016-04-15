@@ -28,50 +28,59 @@ ParticleSystem* Model::getParticleSystem() {
 
 
 /////////////class MyModel ///////////////////
-void ground(float h);
-void head_rotation(float h);
-void body(float h);
-void left_upper_arm(float h);
-void left_lower_arm(float h, Mat4f CameraMatrix);
-void right_upper_arm(float h);
-void right_lower_arm(float h);
-void left_upper_leg(float h);
-void left_lower_leg(float h);
-void right_upper_leg(float h);
-void right_lower_leg(float h);
-void y_box(float h);
-void mass_change(float h);
+// void ground(float h);
+// void head_rotation(float h);
+// void body(float h);
+// void left_upper_arm(float h);
+// void left_lower_arm(float h, Mat4f CameraMatrix);
+// void right_upper_arm(float h);
+// void right_lower_arm(float h);
+// void left_upper_leg(float h);
+// void left_lower_leg(float h);
+// void right_upper_leg(float h);
+// void right_lower_leg(float h);
+// void y_box(float h);
+// void mass_change(float h);
 
 MyModel::MyModel() :
   	Model("Robot"),
-  	headRotation("Head Rotation", -90, 90, 0, 1), // minRange, maxRange, init, delta
-  	leftUpperArmTilt("Left upper arm tilt", 0, 250, 180, 1),
-  	leftLowerArmTilt("Left lower arm tilt", -115, 0, 0, 1),
-  	rightUpperArmTilt("Right upper arm tilt", 0, 250, 180, 1),
-  	rightLowerArmTilt("Right lower arm tilt", -115, 0, 0, 1),
-  	leftUpperLegTilt("Left upper leg tilt", 90, 250, 180, 1),
-  	leftLowerLegTilt("Left lower leg tilt", 0, 95, 0, 1),
-  	rightUpperLegTilt("Right upper leg tilt", 90, 250, 180, 1),
-  	rightLowerLegTilt("Right lower leg tilt", 0, 95, 0, 1),
-  	mass("Mass", 1, 10, 3, 0.5)
+  	sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
+	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
+	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
+  	// headRotation("Head Rotation", -90, 90, 0, 1), // minRange, maxRange, init, delta
+  	// leftUpperArmTilt("Left upper arm tilt", 0, 250, 180, 1),
+  	// leftLowerArmTilt("Left lower arm tilt", -115, 0, 0, 1),
+  	// rightUpperArmTilt("Right upper arm tilt", 0, 250, 180, 1),
+  	// rightLowerArmTilt("Right lower arm tilt", -115, 0, 0, 1),
+  	// leftUpperLegTilt("Left upper leg tilt", 90, 250, 180, 1),
+  	// leftLowerLegTilt("Left lower leg tilt", 0, 95, 0, 1),
+  	// rightUpperLegTilt("Right upper leg tilt", 90, 250, 180, 1),
+  	// rightLowerLegTilt("Right lower leg tilt", 0, 95, 0, 1),
+  	// mass("Mass", 1, 10, 3, 0.5)
   {
-  	properties.add(&headRotation)
-			  .add(&leftUpperArmTilt)
-			  .add(&leftLowerArmTilt)
-			  .add(&rightUpperArmTilt)
-			  .add(&rightLowerArmTilt)
-			  .add(&leftUpperLegTilt)
-			  .add(&leftLowerLegTilt)
-			  .add(&rightUpperLegTilt)
-			  .add(&rightLowerLegTilt)
+  	 properties.add(&sphereCenterX)
+  	 			.add(&sphereCenterY)
+  	 			.add(&sphereCenterZ);
+  	 		//.add(&headRotation)
+			//   .add(&leftUpperArmTilt)
+			//   .add(&leftLowerArmTilt)
+			//   .add(&rightUpperArmTilt)
+			//   .add(&rightLowerArmTilt)
+			//   .add(&leftUpperLegTilt)
+			//   .add(&leftLowerLegTilt)
+			//   .add(&rightUpperLegTilt)
+			//   .add(&rightLowerLegTilt)
 			  //.add(&ps->restitution)
-			  .add(&mass);
+			//  .add(&mass);
 
   }
 
 void MyModel::draw() {
 	cloth = new Cloth(Vec3f(-3.0, 4.0, 0.0), 3.0, 3.0, 3, 3);
-	cloth->drawCloth();
+	// float x = sphereCenterX;
+	// float y = sphereCenterY;
+	// float z = sphereCenterZ;
+	cloth->drawCloth(sphereCenterX, sphereCenterY, sphereCenterZ);
 
 	/*Mat4f CameraMatrix = glGetModelViewMatrix();
 	//pick up the slider values 
@@ -182,6 +191,7 @@ void MyModel::SpawnParticles(Mat4f CameraTransforms)
 
 // }
 
+/*
 void ground(float h) 
 {
 	setDiffuseColor(0.6,0.4,0.45);
@@ -407,7 +417,7 @@ void y_box(float h) {
 
 	glEnd();
 }
-
+*/
 ///////////// class Light ///////////////
 Light::Light(const char* name, GLuint lightNumber,
 						 float x, float y, float z,

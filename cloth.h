@@ -6,6 +6,7 @@
 #include "force.h"
 #include "clothParticle.h"
 #include "constraint.h"
+#include "properties.h"
 
 class Cloth {
 private: 
@@ -14,6 +15,7 @@ private:
 		//ClothParticle cpList[];
 		std::vector<ClothParticle> cpList;
 		//std::vector<Constraint> cList;
+		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 
 public:
 	/** Constructor **/
@@ -25,7 +27,7 @@ public:
 	/** Simulation fxns **/
 	// This fxn should render all particles in the system,
 	// at current time t.
-	virtual void drawCloth();
+	virtual void drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, RangeProperty sphereCenterZ);
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.

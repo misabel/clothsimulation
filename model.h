@@ -78,16 +78,17 @@ class MyModel : public Model {
 	 
 protected:
 	
-  RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
+  /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
-  				rightLowerLegTilt, mass;
+  				rightLowerLegTilt, mass;*/
+  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 
 public:
   MyModel();
   void draw();
   virtual Mat4f glGetModelViewMatrix();
   virtual void SpawnParticles( Mat4f CameraTransforms );
-  virtual void left_lower_arm(float h, Mat4f CameraMatrix);
+  //virtual void left_lower_arm(float h, Mat4f CameraMatrix);
 
   
 

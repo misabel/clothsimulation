@@ -12,9 +12,10 @@ class Cloth {
 private: 
 		int x_num; // number of particle in x-asix
 		int y_num;
-		//ClothParticle cpList[];
 		std::vector<ClothParticle> cpList;
-		//std::vector<Constraint> cList;
+		std::vector<Constraint> cList;
+		Vec3f ballLoc = Vec3f(2.0f, -2.0f, 2.0f); // get init in model.cpp
+
 		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 
 public:
@@ -39,6 +40,8 @@ public:
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.
 	 virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
+
+	 virtual void drawFan();
 
 	 virtual void bakeParticles(float t);
 

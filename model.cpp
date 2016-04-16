@@ -47,6 +47,8 @@ MyModel::MyModel() :
   	sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
 	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
 	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
+	, width("Width", 1, 10, 5, 1),
+	length("Length", 1, 10, 5, 1)
   	// headRotation("Head Rotation", -90, 90, 0, 1), // minRange, maxRange, init, delta
   	// leftUpperArmTilt("Left upper arm tilt", 0, 250, 180, 1),
   	// leftLowerArmTilt("Left lower arm tilt", -115, 0, 0, 1),
@@ -60,7 +62,9 @@ MyModel::MyModel() :
   {
   	 properties.add(&sphereCenterX)
   	 			.add(&sphereCenterY)
-  	 			.add(&sphereCenterZ);
+  	 			.add(&sphereCenterZ)
+  				.add(&width)
+  	 			.add(&length);
   	 		//.add(&headRotation)
 			//   .add(&leftUpperArmTilt)
 			//   .add(&leftLowerArmTilt)
@@ -76,7 +80,8 @@ MyModel::MyModel() :
   }
 
 void MyModel::draw() {
-	cloth = new Cloth(Vec3f(-3.0, 4.0, 0.0), 10.0, 10.0, 250, 250);
+
+	cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), 250, 250);
 	// float x = sphereCenterX;
 	// float y = sphereCenterY;
 	// float z = sphereCenterZ;

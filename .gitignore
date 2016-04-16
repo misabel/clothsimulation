@@ -30,3 +30,7 @@ modeler
 *.exe
 *.out
 *.app
+
+*.o
+
+*.o

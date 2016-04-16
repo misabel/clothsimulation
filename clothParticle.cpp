@@ -42,6 +42,16 @@ ClothParticle::ClothParticle(const Vec3f Position, bool fixed)
 
 }
 
+void ClothParticle::drawClothParticle() {
+
+    glPointSize(3.0f); // when something get checked, enable it
+    glBegin(GL_POINTS);
+    	glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(_position[0], _position[1], _position[2]);
+	glEnd();
+}
+
+
 // void ClothParticle::addForce(Vec3f force)
 // {
 // 	_forces += force;

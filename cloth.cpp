@@ -5,6 +5,7 @@
 #include <iostream>
 #include "modelerdraw.h"
 #include "FL/glut.H"
+#include "model.h"
 
 
 
@@ -21,9 +22,9 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 		for (int j = 0; j < y_num; j++) {
 
-			Vec3f pos = Vec3f(sectionWidth * i, // + origin[0],
-						-sectionHeight * j, // + origin[1],
-						0.0); // reset z
+			Vec3f pos = Vec3f(sectionWidth * i + origin[0], // + origin[0],
+						-sectionHeight * j + origin[1], // + origin[1],
+						origin[2]; // reset z
 
 			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
 			 	cpList.push_back(ClothParticle(pos, true));
@@ -36,26 +37,62 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 		}
 	}
 
-	// Connect particles: structural constraint & shear constraint 
-	// for (int i = 0; i < x_num; ++i)
-	// {
-	// 	for (int j = 0; j < y_num; ++j)
-	// 	{
-	// 		int curIndex = j*x_num+i;
-	// 		int index; // particle need to connect to the current particle 
-	// 		if (i < x_num - 1)
-	// 		{
-	// 			index = j*x_num+i+1;
-	// 			cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-	// 		}
-	// 		if (j < y_num - 1)
-	// 		{
-	// 			index = (j+1)*x_num+i;
-	// 			cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-	// 		}
-	// 		// need to do sheer constraint
-	// 	}
-	// }
+// Connect particles: structural constraint & shear constraint 
+	for (int i = 0; i < x_num; ++i)
+	{
+		for (int j = 0; j < y_num; ++j)
+		{
+			int curIndex = j*x_num+i;
+			int index; // particle need to connect to the current particle 
+			int index2;
+			if (i < x_num - 1) {
+				index = j*x_num+i+1;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+			}
+			if (j < y_num - 1) {
+				index = (j+1)*x_num+i;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+			}
+			if (i < x_num - 1 && j < y_num - 1) {
+				index = (j+1)*x_num+i+1;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				index = (j)*x_num+i+1;
+				index2 = (j+1)*x_num+i;
+				cList.push_back(Constraint(cpList[index], cpList[index2]));
+			}
+		}
+	}
+
+	// Connect particles: bending constraint
+	for (int i = 0; i < x_num; ++i)
+	{
+		for (int j = 0; j < y_num; ++j)
+		{
+			int curIndex = j*x_num+i;
+			int index; // particle need to connect to the current particle 
+			int index2;
+			if (i < x_num - 2) {
+				index = j*x_num+i+2;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+			}
+			if (j < y_num - 2) {
+				index = (j+2)*x_num+i;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+			}
+			if (i < x_num - 2 && j < y_num - 2) {
+				index = (j+2)*x_num+i+2;
+				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				index = (j)*x_num+i+2;
+				index2 = (j+2)*x_num+i;
+				cList.push_back(Constraint(cpList[index], cpList[index2]));
+			}
+
+		}
+	}
+
+	//cout << "POINT: " << cpList.size() << endl;
+	//cout << "LINES: " << cList.size() << endl;
+	
 
 
 }
@@ -63,6 +100,9 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 Cloth::~Cloth() {
 
 	//delete [] cpList;
+	cout << "it's cleaning up the list" << endl;
+	cpList.clear();
+	cList.clear();
 }
 
 void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, RangeProperty sphereCenterZ) {		
@@ -154,7 +194,7 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 			glColorPointer(3, GL_FLOAT, 0, colors);
 			glVertexPointer(3, GL_FLOAT, 0, vertices);
 
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
 
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);
@@ -163,26 +203,46 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 	 	}
 	 }
 
-	 // Draw the default sphere for collision
-	glPopMatrix();
+	// Draw the default sphere for collision
 	glPushMatrix();
-	glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
-	glutSolidSphere(.5, 20, 20); // the 20's are arbitary
+		glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+		glutSolidSphere(.5, 20, 20); // the 20's are arbitary
+		ballLoc = Vec3f(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
 	glPopMatrix();
 
+	// Draw the points;
+	 for(int i = 0; i < cpList.size(); i++) {
+	 	cpList[i].drawClothParticle();
+	 }
 
- //    glPointSize(6.0f); // when something get checked, enable it, e
+	// Draw the constraints
+	for (int i = 0; i < cList.size(); i++) {
+		cList[i].drawConstraint();
+	}
 
-    
- //    glBegin(GL_POINTS);
- //    glColor3f(0.0f, 0.0f, 1.0f);
-	//  for(int i = 0; i < cpList.size(); i++) {
-	//  	glColor3f(0.0f, 0.0f, 1.0f);
-		
-	// 	glVertex3f(cpList[i].getPosition()[0],cpList[i].getPosition()[1],cpList[i].getPosition()[2] );
-	// 	}
-	// glEnd();
+	// Draw the fan
+	drawFan();
 	
+
+	
+}
+
+void Cloth::drawFan() {
+    
+    glBegin(GL_TRIANGLES);//start drawing triangles
+      glVertex3f(-.5f,-.866f,-1.5f);//triangle one first vertex
+      glVertex3f(.5f,-.866f,-1.5f);//triangle one second vertex
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle one third vertex
+      //drawing a 2nd triangle
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle two first vertex
+      glVertex3f(-1.0f,0.0f,-1.5f);//triangle two second vertex
+      glVertex3f(-0.5f,0.866f,-1.5f);//triangle two third vertex
+      //drawing a 3nd triangle
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle two first vertex
+      glVertex3f(1.0f,0.0f,-1.5f);//triangle two second vertex
+      glVertex3f(0.5f,0.866f,-1.5f);//triangle two third vertex
+    glEnd();//end drawing of triangles
+
 }
 
 Vec3f Cloth::findNormal(Vec3f p1, Vec3f p2, Vec3f p3){

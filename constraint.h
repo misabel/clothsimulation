@@ -4,30 +4,41 @@
 #include "vec.h"
 #include <vector>
 #include "clothParticle.h"
+using namespace std;
 
-// class Constraint {
-// private: 
-// 	float restLength; // init distance btw two ClothParticles. 		
+class Constraint {
+public:
+	/** Constructor **/
+	Constraint(ClothParticle p1, ClothParticle p2);
 
-// public:
-// 	ClothParticle *p1, *p2;
+	/** Destructor **/
+	virtual ~Constraint();
 
-// 	/** Constructor **/
-// 	Constraint(ClothParticle p1, ClothParticle p2);
+	/** Simulation fxns **/
+	// This fxn should render all particles in the system,
+	// at current time t.
+	virtual void drawConstraint();//ClothParticle p1, ClothParticle p2);
 
-// 	* Destructor *
-// 	virtual ~Constraint();
+	virtual void satisfyConstraints();
 
-// 	/** Simulation fxns **/
-// 	// This fxn should render all particles in the system,
-// 	// at current time t.
-// 	virtual void drawConstraint();
+	virtual ClothParticle getP1() {
+		 return _p1;
+	}
 
-// 	virtual void satisfyConstraints();
+	virtual ClothParticle getP2() {
+		return _p2;
+	}
 
+protected:
+	// ClothParticle *p1;
+	// ClothParticle *p2;
+	ClothParticle _p1;
+	ClothParticle _p2;
 
+private: 
+	float restLength; // init distance btw two ClothParticles. 
 
-// };
+};
 
 
 #endif __CONSTRAINT_H__

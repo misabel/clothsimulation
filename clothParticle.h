@@ -36,6 +36,8 @@ public:
 		_accNormal = _accNormal + n;
 	}
 
+	void drawClothParticle();
+
 
 	
 	// void addForce(Vec3f f);

@@ -41,6 +41,8 @@ public:
 	// and update their state (pos and vel) appropriately.
 	 virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
 
+	 virtual void drawFan();
+
 	 virtual void bakeParticles(float t);
 
 	// // This function should reset the system to its initial state.

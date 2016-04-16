@@ -216,7 +216,30 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 	for (int i = 0; i < cList.size(); i++) {
 		cList[i].drawConstraint();
 	}
+
+	// Draw the fan
+	drawFan();
 	
+
+	
+}
+
+void Cloth::drawFan() {
+    
+    glBegin(GL_TRIANGLES);//start drawing triangles
+      glVertex3f(-.5f,-.866f,-1.5f);//triangle one first vertex
+      glVertex3f(.5f,-.866f,-1.5f);//triangle one second vertex
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle one third vertex
+      //drawing a 2nd triangle
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle two first vertex
+      glVertex3f(-1.0f,0.0f,-1.5f);//triangle two second vertex
+      glVertex3f(-0.5f,0.866f,-1.5f);//triangle two third vertex
+      //drawing a 3nd triangle
+      glVertex3f(0.0f,0.0f,-1.5f);//triangle two first vertex
+      glVertex3f(1.0f,0.0f,-1.5f);//triangle two second vertex
+      glVertex3f(0.5f,0.866f,-1.5f);//triangle two third vertex
+    glEnd();//end drawing of triangles
+
 }
 
 Vec3f Cloth::findNormal(Vec3f p1, Vec3f p2, Vec3f p3){

@@ -24,7 +24,7 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 			Vec3f pos = Vec3f(sectionWidth * i + origin[0], // + origin[0],
 						-sectionHeight * j + origin[1], // + origin[1],
-						origin[2]; // reset z
+						origin[2]); // reset z
 
 			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
 			 	cpList.push_back(ClothParticle(pos, true));

@@ -87,8 +87,8 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 		}
 	}
 
-	cout << "POINT: " << cpList.size() << endl;
-	cout << "LINES: " << cList.size() << endl;
+	//cout << "POINT: " << cpList.size() << endl;
+	//cout << "LINES: " << cList.size() << endl;
 	
 
 

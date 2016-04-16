@@ -81,7 +81,7 @@ protected:
   /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
   				rightLowerLegTilt, mass;*/
-  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
+  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length;
 
 public:
   MyModel();

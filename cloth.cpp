@@ -7,7 +7,10 @@
 #include "FL/glut.H"
 #include "model.h"
 
+using namespace std;
 
+
+static float prevT;
 
 Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
@@ -18,6 +21,8 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 	float sectionWidth = width / (float) x;
 	float sectionHeight = height / (float) y;
 
+	cpList.clear();
+	cList.clear();
 	for (int i = 0; i < x_num; i++) {
 
 		for (int j = 0; j < y_num; j++) {
@@ -26,7 +31,8 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 						-sectionHeight * j + origin[1], // + origin[1],
 						origin[2]); // reset z
 
-			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
+			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) ){
+			 	// || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
 			 	cpList.push_back(ClothParticle(pos, true));
 			} else {
 				cpList.push_back(ClothParticle(pos, false));
@@ -34,61 +40,82 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 			//cout << pos << endl;
 
+
 		}
 	}
 
 // Connect particles: structural constraint & shear constraint 
-	for (int i = 0; i < x_num; ++i)
+	for (int i = 0; i < x_num; i++)
 	{
-		for (int j = 0; j < y_num; ++j)
+		for (int j = 0; j < y_num; j++)
 		{
-			int curIndex = j*x_num+i;
-			int index; // particle need to connect to the current particle 
-			int index2;
+			// int curIndex = j*x_num+i;
+			// int index; // particle need to connect to the current particle 
+			// int index2;
 			if (i < x_num - 1) {
-				index = j*x_num+i+1;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				// index = j*x_num+i+1;
+				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				cList.push_back(Constraint( getClothParticle(i, j), getClothParticle(i + 1, j)));
 			}
 			if (j < y_num - 1) {
-				index = (j+1)*x_num+i;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				// index = (j+1)*x_num+i;
+				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i, j + 1)));
 			}
 			if (i < x_num - 1 && j < y_num - 1) {
-				index = (j+1)*x_num+i+1;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-				index = (j)*x_num+i+1;
-				index2 = (j+1)*x_num+i;
-				cList.push_back(Constraint(cpList[index], cpList[index2]));
+				// index = (j+1)*x_num+i+1;
+				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 1, j + 1)));
+				// index = (j)*x_num+i+1;
+				// index2 = (j+1)*x_num+i;
+				// cList.push_back(Constraint(cpList[index], cpList[index2]));
+				cList.push_back(Constraint(getClothParticle(i + 1, j), getClothParticle(i, j + 1)));
 			}
-		}
-	}
 
-	// Connect particles: bending constraint
-	for (int i = 0; i < x_num; ++i)
-	{
-		for (int j = 0; j < y_num; ++j)
-		{
-			int curIndex = j*x_num+i;
-			int index; // particle need to connect to the current particle 
-			int index2;
 			if (i < x_num - 2) {
-				index = j*x_num+i+2;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				// index = j*x_num+i+2;
+				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 2, j)));
 			}
 			if (j < y_num - 2) {
-				index = (j+2)*x_num+i;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+				// index = (j+2)*x_num+i;
+				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i, j + 2)));
 			}
 			if (i < x_num - 2 && j < y_num - 2) {
-				index = (j+2)*x_num+i+2;
-				cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-				index = (j)*x_num+i+2;
-				index2 = (j+2)*x_num+i;
-				cList.push_back(Constraint(cpList[index], cpList[index2]));
+				// index = (j+2)*x_num+i+2;
+				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 2, j + 2)));
+				// index = (j)*x_num+i+2;
+				// index2 = (j+2)*x_num+i;
+				cList.push_back(Constraint(getClothParticle(i + 2, j), getClothParticle(i, j + 2)));
 			}
-
 		}
 	}
+
+	// // Connect particles: bending constraint
+	// for (int i = 0; i < x_num; ++i)
+	// {
+	// 	for (int j = 0; j < y_num; ++j)
+	// 	{
+	// 		int curIndex = j*x_num+i;
+	// 		int index; // particle need to connect to the current particle 
+	// 		int index2;
+	// 		if (i < x_num - 2) {
+	// 			index = j*x_num+i+2;
+	// 			cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 		}
+	// 		if (j < y_num - 2) {
+	// 			index = (j+2)*x_num+i;
+	// 			cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 		}
+	// 		if (i < x_num - 2 && j < y_num - 2) {
+	// 			index = (j+2)*x_num+i+2;
+	// 			cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 			index = (j)*x_num+i+2;
+	// 			index2 = (j+2)*x_num+i;
+	// 			cList.push_back(Constraint(cpList[index], cpList[index2]));
+	// 		}
+
+	// 	}
+	// }
 
 	//cout << "POINT: " << cpList.size() << endl;
 	//cout << "LINES: " << cList.size() << endl;
@@ -105,7 +132,7 @@ Cloth::~Cloth() {
 	cList.clear();
 }
 
-void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, RangeProperty sphereCenterZ) {		
+void Cloth::drawCloth(float x, float y, float z) {		
 	
 	for (int i = 0; i < x_num - 1; ++i) {
 		for (int j = 0; j < y_num - 1; ++j) {
@@ -194,7 +221,7 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 			glColorPointer(3, GL_FLOAT, 0, colors);
 			glVertexPointer(3, GL_FLOAT, 0, vertices);
 
-			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, indices);
 
 			glDisableClientState(GL_NORMAL_ARRAY);
 			glDisableClientState(GL_COLOR_ARRAY);
@@ -205,26 +232,30 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 
 	// Draw the default sphere for collision
 	glPushMatrix();
-		glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+		glTranslatef(x, y, z);
 		glutSolidSphere(.5, 20, 20); // the 20's are arbitary
-		ballLoc = Vec3f(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+		ballLoc = Vec3f(x, y, z);
 	glPopMatrix();
 
-	// Draw the points;
-	 for(int i = 0; i < cpList.size(); i++) {
-	 	cpList[i].drawClothParticle();
-	 }
+	// // Draw the points;
+	//  for(int i = 0; i < cpList.size(); i++) {
+	//  	cpList[i].drawClothParticle();
+	//  }
 
-	// Draw the constraints
-	for (int i = 0; i < cList.size(); i++) {
-		cList[i].drawConstraint();
-	}
+	// // Draw the constraints
+	// for (int i = 0; i < cList.size(); i++) {
+	// 	cList[i].drawConstraint();
+	// }
 
 	// Draw the fan
 	drawFan();
 	
 
 	
+}
+
+void Cloth::drawCloth() {
+	drawCloth(x, y, z);
 }
 
 void Cloth::drawFan() {
@@ -254,25 +285,70 @@ Vec3f Cloth::findNormal(Vec3f p1, Vec3f p2, Vec3f p3){
 
 }
 
-void Cloth::updateForcesAndCollision(float t, Vec3f sphereLoc) {
+void Cloth::updateForcesAndCollision(float t) {
 
-	for (int i = 0; i < x_num - 1; ++i) {
-		for (int j = 0; j < y_num - 1; ++j) {
-			int index = j*x_num+i;
-			Vec3f v = cpList[index].getPosition()-sphereLoc;
-			float length = v.length();
-
-			if (length < .5 + .005) // radius for sphere is fixed & threshold
-			{
-				cpList[index].setPosition(cpList[index].getPosition() + v*(.5-length)); // may have to normalize
-			}
-
+	float deltaT = t - prevT;
+	prevT = t;
+	if(simulate) {
+		
+		//add gravity to all particles
+		for(int i = 0; i < cpList.size(); i++) {
+			cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
 
 		}
+
+		//check that they satisfy their constraints
+		for(int i = 0; i < 10; i++) {
+			for(int j = 0; j < cList.size(); j++) {
+				cList[j].satisfyConstraints();
+			}
+		}
+
+		//update positions of cloth particles
+		for(int i = 0; i < cpList.size(); i++) {
+			cpList[i].update(deltaT);
+		}
+
+		checkForCollision();
+
 	}
+
+
 
 }
 
+void Cloth::checkForCollision() {
+	for (int i = 0; i < x_num - 1; ++i) {
+			for (int j = 0; j < y_num - 1; ++j) {
+				// int index = j*x_num+i;
+				Vec3f v = getClothParticle(i, j)->getPosition() - Vec3f(x, y, z);
+				float length = v.length();
+
+				if (length < .5 + .005) // radius for sphere is fixed & threshold
+				{
+					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v*(.5-length)); // may have to normalize
+				}
+
+
+			}
+		}
+		drawCloth(x, y, z);
+
+		cout << "updating" << endl;
+}
+
+// void Cloth::updateConstraintsAndParticles() {
+
+// 	for(int i = 0; i < 10; i++) {
+// 		for(int j = 0; j < cList.size(); j++) {
+// 			cList[j].satisfyConstraint();
+// 		}
+// 	}
+
+// 	for(int i = 0; i < cpList.size(); i++) {
+// 		cpList[j].update();
+// 	}
+// }
 void Cloth::bakeParticles(float t) {
 
 }
@@ -281,7 +357,7 @@ void Cloth::bakeParticles(float t) {
 void Cloth::startSimulation(float t)
 {
 
-	//prevT = t;
+	prevT = t;
 	bake_start_time = 0;
 
 	// These values are used by the UI ...

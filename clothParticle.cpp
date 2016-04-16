@@ -2,10 +2,12 @@
 
 
 ClothParticle::ClothParticle(bool fixed){
-	_mass = 0.5;
+	_mass = 1;
 	_position = Vec3f(0.0);
+	_prevPosition = Vec3f(0.0);
 	_velocity = Vec3f(0.0);
 	_isFixed = fixed;
+	_acc = Vec3f(0.0);
 
 	// _state = new Vec3f[2];
 	// _forces = Vec3f(0.0);
@@ -16,6 +18,8 @@ ClothParticle::ClothParticle(float mass, const Vec3f Position, const Vec3f Veloc
 	_position = Vec3f(Position);
 	_velocity = Velocity;
 	_isFixed = fixed;
+	_acc = Vec3f(0.0);
+	_prevPosition = Vec3f(0.0);
 	// _state = new Vec3f[2];
 	// _forces = Vec3f(0.0);
 	// updateState();
@@ -26,6 +30,8 @@ ClothParticle::ClothParticle(const Vec3f Position, const Vec3f Velocity, bool fi
 	_position = Vec3f(Position);
 	_velocity = Velocity;
 	_isFixed = fixed;
+	_acc = Vec3f(0.0);
+	_prevPosition = Vec3f(0.0);
 	// _state = new Vec3f[2];
 	// _forces = Vec3f(0.0);
 	// updateState();
@@ -36,6 +42,8 @@ ClothParticle::ClothParticle(const Vec3f Position, bool fixed)
 	_position = Vec3f(Position);
 	_velocity = Vec3f(0.0);
 	_isFixed = fixed;
+	_acc = Vec3f(0.0);
+	_prevPosition = Vec3f(0.0);
 	// _state = new Vec3f[2];
 	// _forces = Vec3f(0.0);
 	// updateState();
@@ -104,5 +112,18 @@ void ClothParticle::derivEval(float deltaT, Vec3f forces)
 	// _forces = Vec3f(0.0);
 	// cout << _forces[1] << endl;
 	// return derivative;
+}
+
+void ClothParticle::update(float t) {
+
+	if(!_isFixed) {
+
+		Vec3f old_pos = _position;
+
+		_position = _position + (1.0 - 0.02) * (_position - _prevPosition) + _acc * t;
+		_prevPosition = old_pos;
+		_acc = Vec3f(0.0);
+
+	}
 }
 

@@ -233,6 +233,12 @@ void ModelerView::draw() {
 		ps->addParticle();
 		ps->drawParticles(ui->getTime());
 	}
+
+	Cloth* cloth = ui->getCloth();
+
+	if(cloth) {
+		cloth->updateForcesAndCollision(ui->getTime());
+	}
 	// Cloth* ps = ui->getCloth();
 	// if (ps) {
 		//ps->updateForcesAndCollision(float t, Vec3f sphereLoc);

@@ -38,7 +38,11 @@ public:
 
 	void drawClothParticle();
 
+	void update(float t);
 
+	void addAcceleration( Vec3f a) {
+		_acc += a/_mass;
+	}
 	
 	// void addForce(Vec3f f);
 	// Vec3f* getState();
@@ -50,7 +54,7 @@ protected:
 	Vec3f _position;
 	Vec3f _prevPosition;
 	Vec3f _velocity;
-	Vec3f _acceleration;
+	Vec3f _acc;
 	Vec3f _accNormal;
 	// Vec3f _forces;
 	Vec3f* _state;

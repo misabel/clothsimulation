@@ -16,7 +16,7 @@ class ICamera;
  * Model.
  */
 class ParticleSystem;
-// class Cloth;
+class Cloth;
 
 /**
  * You will extend this class to create your model.
@@ -30,6 +30,7 @@ protected:
 	 */
 	GroupProperty properties;
 	ParticleSystem* ps;
+	Cloth *cloth;
 	//Cloth* ps;
 
 public:
@@ -65,7 +66,7 @@ public:
 	 * Override this method to return the particle system you want to control.
 	 */
 	virtual ParticleSystem* getParticleSystem();
-	//virtual Cloth* getCloth();
+	virtual Cloth* getCloth();
 	//virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
 
 
@@ -81,7 +82,7 @@ protected:
   /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
   				rightLowerLegTilt, mass;*/
-  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length;
+  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length, width_density, height_density;
 
 public:
   MyModel();
@@ -92,8 +93,8 @@ public:
 
   
 
-private:
-	Cloth *cloth;
+// private:
+	// Cloth *cloth;
 
 };
 

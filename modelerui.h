@@ -181,6 +181,7 @@ public: // TODO: make private?
 private:
 	/** Particle system */
 	ParticleSystem* ps;
+	Cloth* cloth;
 	//Cloth* ps;
 
 	/** Shows the range of the animation that has been baked. */
@@ -194,6 +195,7 @@ public:
 
 	/** Returns the particle system for the current model. */
 	ParticleSystem* getParticleSystem();
+	Cloth* getCloth();
 	//Cloth* getCloth();
 
 ///////////////////////// SINGLETON INFO //////////////////////////

@@ -579,6 +579,7 @@ ModelerUserInterface::ModelerUserInterface() {
 	renderGroup = NULL;
 	defaultCam = NULL;
 	ps = NULL;
+	cloth = NULL;
 	movieWidth = 720;
 	movieHeight = 480;
 
@@ -914,6 +915,8 @@ void ModelerUserInterface::setModel(Model* model) {
 
 	// Set particle system
 	ps = model->getParticleSystem();
+	cloth = model->getCloth();
+
 	//ps = model->getCloth();
 
 	// Populate list with model items
@@ -1585,6 +1588,10 @@ ParticleSystem* ModelerUserInterface::getParticleSystem() {
 	return ps; 
 }
 
+Cloth* ModelerUserInterface::getCloth() {
+	return cloth;
+}
+
 void ModelerUserInterface::checkboxUseCameraCallback(Fl_Check_Button* checkbox, void* p) {
 	ModelerUserInterface::getInstance()->
 		useCamera(checkbox->value() ? true : false);
@@ -1654,12 +1661,44 @@ void ModelerUserInterface::syncSimulate() {
 			// otherwise, we sync the psystem
 			// to the ui
 			else if (simulating) {
-				ps->startSimulation(graph->currTime());
+				// ps->startSimulation(graph->currTime());
 			} else {
 				ps->stopSimulation(graph->currTime());
 			}
 		}
 		ps->setDirty(false);
+	}
+
+	if(cloth != NULL) {
+		cout << "cloth is not null"  << endl;
+		bool sim = cloth->isSimulate();
+
+		const double TIME_EPSILON = 0.05;
+
+		if (sim && (graph->currTime() >= (graph->endTime() - TIME_EPSILON))) {
+			cloth->stopSimulation(graph->currTime()); 
+		}
+
+		// check to see if we're simulating still
+		sim = cloth->isSimulate();
+		if (simulating != sim) {
+			// if the psystem is dirty,
+			// we need to sync to it
+			if (cloth->isDirty()) {
+				simulating = sim;
+				// TODO: update UI controls?
+				checkboxSimulate->value(sim);
+			}
+			// otherwise, we sync the psystem
+			// to the ui
+			else if (simulating) {
+				cloth->startSimulation(graph->currTime());
+			} else {
+				cloth->stopSimulation(graph->currTime());
+			}
+		}
+		cloth->setDirty(false);
+
 	}
 }
 

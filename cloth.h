@@ -17,6 +17,7 @@ private:
 		Vec3f ballLoc = Vec3f(2.0f, -2.0f, 2.0f); // get init in model.cpp
 
 		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
+		float x, y, z;
 
 public:
 	/** Constructor **/
@@ -35,11 +36,17 @@ public:
 	/** Simulation fxns **/
 	// This fxn should render all particles in the system,
 	// at current time t.
-	virtual void drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, RangeProperty sphereCenterZ);
+	virtual void drawCloth(float x, float y, float z);
+
+	virtual void drawCloth();
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.
-	 virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
+	 virtual void updateForcesAndCollision(float t);
+
+	 virtual void checkForCollision();
+
+	 // virtual void updateConstraintsAndParticles();
 
 	 virtual void drawFan();
 

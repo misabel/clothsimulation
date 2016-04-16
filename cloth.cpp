@@ -14,12 +14,15 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 	x_num = x;
 	y_num = y;
 
+	float sectionWidth = width / (float) x;
+	float sectionHeight = height / (float) y;
+
 	for (int i = 0; i < x_num; i++) {
 
 		for (int j = 0; j < y_num; j++) {
 
-			Vec3f pos = Vec3f(width * i, // + origin[0],
-						-height * j, // + origin[1],
+			Vec3f pos = Vec3f(sectionWidth * i, // + origin[0],
+						-sectionHeight * j, // + origin[1],
 						0.0); // reset z
 
 			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {

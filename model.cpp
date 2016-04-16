@@ -76,7 +76,7 @@ MyModel::MyModel() :
   }
 
 void MyModel::draw() {
-	cloth = new Cloth(Vec3f(-3.0, 4.0, 0.0), 10.0, 10.0, 3, 3);
+	cloth = new Cloth(Vec3f(-3.0, 4.0, 0.0), 10.0, 10.0, 250, 250);
 	// float x = sphereCenterX;
 	// float y = sphereCenterY;
 	// float z = sphereCenterZ;

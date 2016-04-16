@@ -24,6 +24,18 @@ public:
 	void updatePosition(Vec3f p) {
 		_position = _position + p;
 	} 
+	Vec3f getNormal() {
+		return _accNormal;
+	}
+	void clearNormal() {
+
+		_accNormal = Vec3f(0.0);
+	}
+	void addNormal (Vec3f n){
+
+		_accNormal = _accNormal + n;
+	}
+
 
 	
 	// void addForce(Vec3f f);
@@ -34,7 +46,10 @@ public:
 protected:
 	float _mass;
 	Vec3f _position;
+	Vec3f _prevPosition;
 	Vec3f _velocity;
+	Vec3f _acceleration;
+	Vec3f _accNormal;
 	// Vec3f _forces;
 	Vec3f* _state;
 	bool _isFixed;

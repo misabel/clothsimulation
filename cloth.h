@@ -24,6 +24,13 @@ public:
 	/** Destructor **/
 	virtual ~Cloth();
 
+	ClothParticle* getClothParticle(int x, int y) {
+
+		return &cpList[y * x_num + x];
+	}
+
+	Vec3f calculateNormal(Vec3f p1, Vec3f p2, Vec3f p3);
+
 	/** Simulation fxns **/
 	// This fxn should render all particles in the system,
 	// at current time t.
@@ -52,6 +59,14 @@ public:
 	virtual void clearBaked();	
 
 	Vec3f findNormal(Vec3f p1, Vec3f p2, Vec3f p3);
+
+	void clearAllNormals() {
+
+		for(int i = 0; i < cpList.size(); i++){
+
+			cpList[i].clearNormal();
+		}
+	}
 
 
 	// These accessor fxns are implemented for you

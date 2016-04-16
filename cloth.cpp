@@ -66,39 +66,65 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 	
 	for (int i = 0; i < x_num - 1; ++i) {
 		for (int j = 0; j < y_num - 1; ++j) {
-			int index = j*x_num+i;
-   
-   
-			Vec3f p1 = cpList[index].getPosition();
+			// int index = j*x_num+i;
 
-			index = (j+1)*x_num+i;
+			ClothParticle* cp1 = getClothParticle( i + 1, j);
+			ClothParticle* cp2 = getClothParticle( i, j);
+			ClothParticle* cp3 = getClothParticle( i, j + 1);
+			ClothParticle* cp4 = getClothParticle( i + 1, j + 1);
 
-			Vec3f p2 = cpList[index].getPosition();
+			Vec3f p1 = cp1->getPosition();
+			Vec3f p2 = cp2->getPosition();
+			Vec3f p3 = cp3->getPosition();
+			Vec3f p4 = cp4->getPosition();
+   			
+   			Vec3f n = calculateNormal( cp1->getPosition(), cp2->getPosition(), cp3->getPosition());
+   			cp1->addNormal(n);
+   			cp2->addNormal(n);
+   			cp3->addNormal(n);
 
-			index = (j+1)*x_num+i+1;
+   			n = calculateNormal(cp4->getPosition(), cp1->getPosition(), cp3->getPosition());
 
-			Vec3f p3 = cpList[index].getPosition();
+   			cp4->addNormal(n);
+   			cp1->addNormal(n);
+   			cp3->addNormal(n);
 
-			index = j*x_num+i+1;
+   			Vec3f n1 = cp1->getNormal();
+   			Vec3f n2 = cp2->getNormal();
+   			Vec3f n3 = cp3->getNormal();
+   			Vec3f n4 = cp4->getNormal();
+
+
+			// Vec3f p1 = cpList[index].getPosition();
+
+			// index = (j+1)*x_num+i;
+
+			// Vec3f p2 = cpList[index].getPosition();
+
+			// index = (j+1)*x_num+i+1;
+
+			// Vec3f p3 = cpList[index].getPosition();
+
+			// index = j*x_num+i+1;
 			
-			Vec3f p4 = cpList[index].getPosition();
+			// Vec3f p4 = cpList[index].getPosition();
 
-			Vec3f n1 = Vec3f(0.0);
-			Vec3f n2 = Vec3f(0.0);
-			Vec3f n3 = Vec3f(0.0);
-			Vec3f n4 = Vec3f(0.0);
+			// Vec3f n1 = Vec3f(0.0);
+			// Vec3f n2 = Vec3f(0.0);
+			// Vec3f n3 = Vec3f(0.0);
+			// Vec3f n4 = Vec3f(0.0);
 
-			Vec3f normal = findNormal(p3, p1, p2);
+			// Vec3f normal = findNormal(p3, p1, p2);
 
-			n3 += normal;
-			n1 += normal;
-			n2 += normal;
+			// n3 += normal;
+			// n1 += normal;
+			// n2 += normal;
 
-			normal = findNormal(p4, p3, p2);
+			// normal = findNormal(p4, p3, p2);
 
-			n4 += normal;
-			n3 += normal;
-			n2 += normal;
+			// n4 += normal;
+			// n3 += normal;
+			// n2 += normal;
 
 			const GLfloat vertices[] = {
 			 	p1[0], p1[1], p1[2],    
@@ -114,7 +140,7 @@ void Cloth::drawCloth(RangeProperty sphereCenterX, RangeProperty sphereCenterY, 
 				n4[0], n4[1], n4[2],
 			};
 
-			const GLubyte indices[] = {0, 1, 2, 0, 2, 3};
+			const GLubyte indices[] = {0, 1, 2, 3, 0, 2};
 			const GLfloat colors[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0 };
 
 			glEnableClientState(GL_NORMAL_ARRAY);
@@ -175,7 +201,7 @@ void Cloth::updateForcesAndCollision(float t, Vec3f sphereLoc) {
 
 			if (length < .5 + .005) // radius for sphere is fixed & threshold
 			{
-				// cpList[index].setPosition(cpList[index].getPosition() + v.normalize()*(.5-length));
+				cpList[index].setPosition(cpList[index].getPosition() + v*(.5-length)); // may have to normalize
 			}
 
 
@@ -232,6 +258,14 @@ void Cloth::clearBaked()
 {
 	// TODO (baking is extra credit)
 
+}
+
+Vec3f Cloth::calculateNormal(Vec3f p1, Vec3f p2, Vec3f p3) {
+
+	Vec3f v1 = p2 - p1;
+	Vec3f v2 = p3 - p1;
+
+	return v1 ^ v2;
 }
 
 

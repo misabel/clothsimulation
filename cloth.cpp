@@ -237,10 +237,10 @@ void Cloth::drawCloth(float x, float y, float z) {
 		ballLoc = Vec3f(x, y, z);
 	glPopMatrix();
 
-	// // Draw the points;
-	//  for(int i = 0; i < cpList.size(); i++) {
-	//  	cpList[i].drawClothParticle();
-	//  }
+	// Draw the points;
+	 for(int i = 0; i < cpList.size(); i++) {
+	 	cpList[i].drawClothParticle();
+	 }
 
 	// // Draw the constraints
 	// for (int i = 0; i < cList.size(); i++) {
@@ -254,9 +254,9 @@ void Cloth::drawCloth(float x, float y, float z) {
 	
 }
 
-void Cloth::drawCloth() {
-	drawCloth(x, y, z);
-}
+// void Cloth::drawCloth() {
+// 	drawCloth(x, y, z);
+// }
 
 void Cloth::drawFan() {
     

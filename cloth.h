@@ -38,7 +38,7 @@ public:
 	// at current time t.
 	virtual void drawCloth(float x, float y, float z);
 
-	virtual void drawCloth();
+	// virtual void drawCloth();
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.

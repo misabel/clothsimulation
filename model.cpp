@@ -35,26 +35,24 @@ MyModel::MyModel() :
 	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
 	, width("Width", 1, 10, 5, 1),
 	length("Length", 1, 10, 5, 1), 
-	width_density("Horizontal density", 3, 100, 50, 1),
-	height_density("Vertical density", 3, 100, 50, 1) 
+	density("Polygon density", 3, 100, 50, 1)
   {
   	 properties.add(&sphereCenterX)
   	 			.add(&sphereCenterY)
   	 			.add(&sphereCenterZ)
   				.add(&width)
   	 			.add(&length)
-  	 			.add(&width_density)
-  	 			.add(&height_density);
+  	 			.add(&density);
   	 		
   	 draw();
 
-  	 
+
   }
 
 void MyModel::draw() {
 
 	// delete cloth;
-	cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), width_density.getValue(), height_density.getValue());
+	cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), density.getValue(), density.getValue());
 	// float x = sphereCenterX;
 	// float y = sphereCenterY;
 	// float z = sphereCenterZ;

@@ -82,7 +82,7 @@ protected:
   /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
   				rightLowerLegTilt, mass;*/
-  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length, width_density, height_density;
+  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length, density;
 
 public:
   MyModel();

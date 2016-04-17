@@ -11,8 +11,6 @@ using namespace std;
 ///////////// class Model ///////////////
 Model::Model(const char* name) : properties(name) {
 	ps = new ParticleSystem();
-	//ps = new Cloth(Vec3f(-3.0, 4.0, 0.0), 3.0, 3.0, 3, 3);
-	 cloth = new Cloth(Vec3f(-2.0, 3.5, .3), 5.0, 5.0, 10, 10);
 }
 GroupProperty* Model::getProperties() { return &properties; }
 void Model::draw() {}
@@ -56,6 +54,7 @@ void MyModel::draw() {
 	// float x = sphereCenterX;
 	// float y = sphereCenterY;
 	// float z = sphereCenterZ;
+	// cloth->updateForcesAndCollision(0.25);
 	cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
 
 	

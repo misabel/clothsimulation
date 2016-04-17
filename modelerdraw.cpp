@@ -349,8 +349,6 @@ void drawSphere(double r)
     }
     else
     {
-    	//Cloth* c = new Cloth(Vec3f(0.0), 10.0, 10.0, 3, 3);
-    	//c->drawCloth();
         int divisions; 
         switch(mds->m_quality)
         {
@@ -580,8 +578,6 @@ int write_revolution_rayfile(FILE* rayfile, int num_vertices, int num_triangles,
 void drawRevolutions(std::vector<Point2d> *pts, int divisions, double scale)
 {
 
-	//Cloth* c = new Cloth(Vec3f(10.0), 10.0, 10.0, 3, 3);
-    //	c->drawCloth();
 	std::vector<Point2d> revolution_pts = *pts;
 	Texture2D checkers = Texture2D("checkers.png");
 
@@ -909,8 +905,6 @@ void drawBox( double x, double y, double z )
     }
     else
     {
-    	//Cloth* c = new Cloth(Vec3f(0.0), 10.0, 10.0, 3, 3);
-    	//c->drawCloth();
         /* remember which matrix mode OpenGL was in. */
         int savemode;
         glGetIntegerv( GL_MATRIX_MODE, &savemode );

@@ -67,7 +67,7 @@ protected:
 
 public:
 	ParticleSystem ps;
-	// Cloth ps;
+	 // Cloth cloth;
 
 	/** Modeler calls this to get our particle system. */
 	ParticleSystem* getParticleSystem() { 
@@ -75,7 +75,7 @@ public:
 	}
 
 	// 	Cloth* getCloth() { 
-	// 	return &ps; 
+	// 	return &cloth; 
 	// }
 
 	
@@ -127,7 +127,6 @@ public:
 		sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
 		sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
 		sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
-
 	{
 		// If you have child Models, like the MobileLight model from model.h,
 		// you can add their property groups, and they will appear in the list
@@ -162,7 +161,7 @@ public:
 				  .add(&diffuse)
 				  ;
 
-				  //ps = new Cloth(Vec3f(-3.0, 4.0, 0.0), 3.0, 3.0, 3, 3);
+				  
 	}
 
 
@@ -251,12 +250,7 @@ public:
 			case 7:
 				// Draw the default sphere for collision
 				glPopMatrix();
-				//glPushMatrix();
-				//glTranslatef(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
-				//glutSolidSphere(.5, 20, 20); // the 20's are arbitary
-				//glPopMatrix();
-				//robotArm.draw();
-				
+
 				myModel.draw();
 
 				break;
@@ -376,7 +370,7 @@ public:
 			}
 
 
-		// Call a class method that draws our model.
+		// Call a class  that draws our model.
 		drawModel();
 		// Stop applying shaders to objects.
 		// This if-statement makes sure that glUseProgram is not a null

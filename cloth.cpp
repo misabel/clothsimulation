@@ -291,23 +291,23 @@ void Cloth::updateForcesAndCollision(float t) {
 	prevT = t;
 	if(simulate) {
 		
-		//add gravity to all particles
-		for(int i = 0; i < cpList.size(); i++) {
-			cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
+		// //add gravity to all particles
+		// for(int i = 0; i < cpList.size(); i++) {
+		// 	cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
 
-		}
+		// }
 
-		//check that they satisfy their constraints
-		for(int i = 0; i < 10; i++) {
-			for(int j = 0; j < cList.size(); j++) {
-				cList[j].satisfyConstraints();
-			}
-		}
+		// //check that they satisfy their constraints
+		// for(int i = 0; i < 10; i++) {
+		// 	for(int j = 0; j < cList.size(); j++) {
+		// 		cList[j].satisfyConstraints();
+		// 	}
+		// }
 
-		//update positions of cloth particles
-		for(int i = 0; i < cpList.size(); i++) {
-			cpList[i].update(deltaT);
-		}
+		// //update positions of cloth particles
+		// for(int i = 0; i < cpList.size(); i++) {
+		// 	cpList[i].update(deltaT);
+		// }
 
 		checkForCollision();
 
@@ -334,7 +334,6 @@ void Cloth::checkForCollision() {
 		}
 		drawCloth(x, y, z);
 
-		// cout << "updating" << endl;
 }
 
 // void Cloth::updateConstraintsAndParticles() {

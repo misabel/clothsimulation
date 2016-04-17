@@ -12,7 +12,7 @@ using namespace std;
 Model::Model(const char* name) : properties(name) {
 	ps = new ParticleSystem();
 	//ps = new Cloth(Vec3f(-3.0, 4.0, 0.0), 3.0, 3.0, 3, 3);
-	// cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), width_density.getValue(), height_density.getValue());
+	 cloth = new Cloth(Vec3f(-2.0, 3.5, .3), 5.0, 5.0, 10, 10);
 }
 GroupProperty* Model::getProperties() { return &properties; }
 void Model::draw() {}

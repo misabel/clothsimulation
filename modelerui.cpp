@@ -1669,8 +1669,9 @@ void ModelerUserInterface::syncSimulate() {
 		ps->setDirty(false);
 	}
 
+	cloth = model->getCloth();
 	if(cloth != NULL) {
-		cout << "cloth is not null"  << endl;
+		// cout << "cloth is not null"  << endl;
 		bool sim = cloth->isSimulate();
 
 		const double TIME_EPSILON = 0.05;

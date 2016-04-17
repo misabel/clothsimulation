@@ -256,6 +256,7 @@ public:
 				//glutSolidSphere(.5, 20, 20); // the 20's are arbitary
 				//glPopMatrix();
 				//robotArm.draw();
+				
 				myModel.draw();
 
 				break;

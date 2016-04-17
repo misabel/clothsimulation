@@ -238,9 +238,9 @@ void Cloth::drawCloth(float x, float y, float z) {
 	glPopMatrix();
 
 	// Draw the points;
-	 for(int i = 0; i < cpList.size(); i++) {
-	 	cpList[i].drawClothParticle();
-	 }
+	 // for(int i = 0; i < cpList.size(); i++) {
+	 // 	cpList[i].drawClothParticle();
+	 // }
 
 	// // Draw the constraints
 	// for (int i = 0; i < cList.size(); i++) {
@@ -334,7 +334,7 @@ void Cloth::checkForCollision() {
 		}
 		drawCloth(x, y, z);
 
-		cout << "updating" << endl;
+		// cout << "updating" << endl;
 }
 
 // void Cloth::updateConstraintsAndParticles() {

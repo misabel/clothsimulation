@@ -9,11 +9,17 @@
 using namespace std;
 
 ///////////// class Model ///////////////
-Model::Model(const char* name) : properties(name) {
+Model::Model(const char* name) : properties(name),
+sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
+	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
+	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1) {
 	ps = new ParticleSystem();
+	cloth = new Cloth();
 }
 GroupProperty* Model::getProperties() { return &properties; }
-void Model::draw() {}
+void Model::draw() {
+	cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+}
 void Model::tick() {}
 void Model::load() {}
 ICamera* Model::getCamera() { return NULL; }
@@ -27,23 +33,20 @@ Cloth* Model::getCloth() {
 
 
 MyModel::MyModel() :
-  	Model("Cloth"),
-  	sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
-	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
-	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
-	, width("Width", 1, 10, 5, 1),
-	length("Length", 1, 10, 5, 1), 
-	density("Polygon density", 3, 100, 50, 1)
-  {
-  	 properties.add(&sphereCenterX)
-  	 			.add(&sphereCenterY)
-  	 			.add(&sphereCenterZ)
-  				.add(&width)
-  	 			.add(&length)
-  	 			.add(&density);
-  	 		
+  	Model("Cloth")
   	
-  	 draw();
+	// , width("Width", 1, 10, 5, 1),
+	// length("Length", 1, 10, 5, 1), 
+	// density("Polygon density", 3, 100, 50, 1)
+  {
+  	 // properties.add(&sphereCenterX)
+  	 // 			.add(&sphereCenterY)
+  	 // 			.add(&sphereCenterZ)
+  		// 		.add(&width)
+  	 // 			.add(&length)
+  	 // 			.add(&density);
+  	 		
+
 
 
   }
@@ -51,12 +54,12 @@ MyModel::MyModel() :
 void MyModel::draw() {
 
 	// delete cloth;
-	cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), density.getValue(), density.getValue());
+	// cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), density.getValue(), density.getValue());
 	// float x = sphereCenterX;
 	// float y = sphereCenterY;
 	// float z = sphereCenterZ;
 	// cloth->updateForcesAndCollision(0.25);
-	cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+	// cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
 
 	
 }

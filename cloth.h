@@ -12,15 +12,17 @@ class Cloth {
 private: 
 		int x_num; // number of particle in x-asix
 		int y_num;
-		std::vector<ClothParticle> cpList;
-		std::vector<Constraint> cList;
+		std::vector<ClothParticle*> cpList;
+		std::vector<Constraint*> cList;
 		Vec3f ballLoc = Vec3f(2.0f, -2.0f, 2.0f); // get init in model.cpp
+		void init(Vec3f origin, float width, float height, int x, int y);
 
 		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
-		float x, y, z;
+		// float x, y, z;
 
 public:
 	/** Constructor **/
+	Cloth();
 	Cloth(Vec3f origin, float width, float height, int x, int y);
 
 	/** Destructor **/
@@ -28,7 +30,7 @@ public:
 
 	ClothParticle* getClothParticle(int x, int y) {
 
-		return &cpList[y * x_num + x];
+		return cpList[y * x_num + x];
 	}
 
 	Vec3f calculateNormal(Vec3f p1, Vec3f p2, Vec3f p3);
@@ -76,7 +78,7 @@ public:
 
 		for(int i = 0; i < cpList.size(); i++){
 
-			cpList[i].clearNormal();
+			cpList[i]->clearNormal();
 		}
 	}
 

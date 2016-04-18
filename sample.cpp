@@ -67,7 +67,7 @@ protected:
 
 public:
 	ParticleSystem ps;
-	 // Cloth cloth;
+	 Cloth cloth;
 
 	/** Modeler calls this to get our particle system. */
 	ParticleSystem* getParticleSystem() { 
@@ -221,9 +221,9 @@ public:
 			// Draw some object at the origin.
 			switch (shapeChoice.getValue()) {
 			case 0: // sphere
-				glRotatef(-90.f,1.f,0.f,0.f);
-				glutSolidSphere(1.0, divisions, divisions);
-				glRotatef(90.f,1.f,0.f,0.f);
+				// glRotatef(-90.f,1.f,0.f,0.f);
+				// glutSolidSphere(1.0, divisions, divisions);
+				// glRotatef(90.f,1.f,0.f,0.f);
 				break;
 			case 1: // box
 				glRotatef(-45.f,0.f,1.f,0.f);
@@ -250,50 +250,50 @@ public:
 			case 7:
 				// Draw the default sphere for collision
 				glPopMatrix();
-
+				// draw();
 				myModel.draw();
 
 				break;
 				
 			}
 
-			if (showReferenceUnitSphere.getValue() ) {
-			    // Now go 1 units in the +y direction,
-				// and 1 units in the NEGATIVE x direction.
-				glTranslated(-2, -1, 0);
-			    // Now go 1 units in the +y direction,
-				// and 1 units in the NEGATIVE x direction.
-					glRotatef(-90.f,1.f,0.f,0.f);
-					drawSphere(.5);
-					glRotatef(90.f,1.f,0.f,0.f);
-				glPopMatrix();
-			}
+			// if (showReferenceUnitSphere.getValue() ) {
+			//     // Now go 1 units in the +y direction,
+			// 	// and 1 units in the NEGATIVE x direction.
+			// 	glTranslated(-2, -1, 0);
+			//     // Now go 1 units in the +y direction,
+			// 	// and 1 units in the NEGATIVE x direction.
+			// 		glRotatef(-90.f,1.f,0.f,0.f);
+			// 		drawSphere(.5);
+			// 		glRotatef(90.f,1.f,0.f,0.f);
+			// 	glPopMatrix();
+			// }
 			
 			// Go back to "world space"
 			glPopMatrix();
 
-		if (shapeChoice.getValue() != 7)
-		{
+		// if (shapeChoice.getValue() != 7)
+		// {
 
-			// Draw the floor.  Here's a basic example of texture mapping.
-			glBegin(GL_QUADS);
-			glTexCoord2f(0, 1); // specify the texture coordinate
-			glNormal3f(0, 1, 0); // specify the surface's normal at this vertex
-			glVertex3f(-10, -2, -10); // both before its corresponding vertex
+		// 	// Draw the floor.  Here's a basic example of texture mapping.
+		// 	glBegin(GL_QUADS);
+		// 	glTexCoord2f(0, 1); // specify the texture coordinate
+		// 	glNormal3f(0, 1, 0); // specify the surface's normal at this vertex
+		// 	glVertex3f(-10, -2, -10); // both before its corresponding vertex
 
-			glTexCoord2f(1, 1);
-			glNormal3f(0, 1, 0);
-			glVertex3f(10, -2, -10);
+		// 	glTexCoord2f(1, 1);
+		// 	glNormal3f(0, 1, 0);
+		// 	glVertex3f(10, -2, -10);
 
-			glTexCoord2f(1, 0);
-			glNormal3f(0, 1, 0);
-			glVertex3f(10, -2, 10);
+		// 	glTexCoord2f(1, 0);
+		// 	glNormal3f(0, 1, 0);
+		// 	glVertex3f(10, -2, 10);
 
-			glTexCoord2f(0, 0);
-			glNormal3f(0, 1, 0);
-			glVertex3f(-10, -2, 10);
-			glEnd();
-		}
+		// 	glTexCoord2f(0, 0);
+		// 	glNormal3f(0, 1, 0);
+		// 	glVertex3f(-10, -2, 10);
+		// 	glEnd();
+		// }
 	}
 
 

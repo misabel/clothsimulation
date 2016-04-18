@@ -12,17 +12,31 @@ using namespace std;
 
 static float prevT;
 
+Cloth::Cloth() {
+	simulate = false;
+	init(Vec3f(-2.0, 3.5, .3), 7.0, 7.0, 50, 50);
+}
 Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 	// Create grid: origin->(width*x_num, -height*y_num, 0)
+	init(origin, width, height, x, y);
+	
+
+
+}
+
+void Cloth::init(Vec3f origin, float width, float height, int x, int y) {
 	x_num = x;
 	y_num = y;
 
-	float sectionWidth = width / (float) x;
-	float sectionHeight = height / (float) y;
+	float sectionWidth = width / (float) x_num;
+	float sectionHeight = height / (float) y_num;
 
-	cpList.clear();
-	cList.clear();
+	// cout << sectionWidth << endl;
+	// cpList.clear();
+	// cList.clear();
+
+	// cout << y_num << endl;
 	for (int i = 0; i < x_num; i++) {
 
 		for (int j = 0; j < y_num; j++) {
@@ -31,11 +45,12 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 						-sectionHeight * j + origin[1], // + origin[1],
 						origin[2]); // reset z
 
-			 if ((i == 0 && j == 0) || (j == 0 && i == x_num - 1) ){
+			//pin three top left points and three top right points
+			 if (j == 0 && (i < 4 || i > y_num - 4) ){
 			 	// || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
-			 	cpList.push_back(ClothParticle(pos, true));
+			 	cpList.push_back(new ClothParticle(pos, true));
 			} else {
-				cpList.push_back(ClothParticle(pos, false));
+				cpList.push_back(new ClothParticle(pos, false));
 			}
 
 			//cout << pos << endl;
@@ -81,21 +96,21 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 			if (i < x_num - 1) {
 				// index = j*x_num+i+1;
 				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-				cList.push_back(Constraint( getClothParticle(i, j), getClothParticle(i + 1, j)));
+				cList.push_back(new Constraint( getClothParticle(i, j), getClothParticle(i + 1, j)));
 			}
 			if (j < y_num - 1) {
 				// index = (j+1)*x_num+i;
 				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i, j + 1)));
+				cList.push_back(new Constraint(getClothParticle(i, j), getClothParticle(i, j + 1)));
 			}
 			if (i < x_num - 1 && j < y_num - 1) {
 				// index = (j+1)*x_num+i+1;
 				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
-				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 1, j + 1)));
+				cList.push_back(new Constraint(getClothParticle(i, j), getClothParticle(i + 1, j + 1)));
 				// index = (j)*x_num+i+1;
 				// index2 = (j+1)*x_num+i;
 				// cList.push_back(Constraint(cpList[index], cpList[index2]));
-				cList.push_back(Constraint(getClothParticle(i + 1, j), getClothParticle(i, j + 1)));
+				cList.push_back( new Constraint(getClothParticle(i + 1, j), getClothParticle(i, j + 1)));
 			}
 		}
 	}
@@ -104,22 +119,23 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 		for(int j = 0; j < y_num; j++) {
 			if (i < x_num - 2) {
 				// index = j*x_num+i+2;
-				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 2, j)));
+				cList.push_back(new Constraint(getClothParticle(i, j), getClothParticle(i + 2, j)));
 			}
 			if (j < y_num - 2) {
 				// index = (j+2)*x_num+i;
-				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i, j + 2)));
+				cList.push_back(new Constraint(getClothParticle(i, j), getClothParticle(i, j + 2)));
 			}
 			if (i < x_num - 2 && j < y_num - 2) {
 				// index = (j+2)*x_num+i+2;
-				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 2, j + 2)));
+				cList.push_back(new Constraint(getClothParticle(i, j), getClothParticle(i + 2, j + 2)));
 				// index = (j)*x_num+i+2;
 				// index2 = (j+2)*x_num+i;
-				cList.push_back(Constraint(getClothParticle(i + 2, j), getClothParticle(i, j + 2)));
+				cList.push_back(new Constraint(getClothParticle(i + 2, j), getClothParticle(i, j + 2)));
 			}
 		}
 	}
 
+	drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
 	// // Connect particles: bending constraint
 	// for (int i = 0; i < x_num; ++i)
 	// {
@@ -149,25 +165,25 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 	//cout << "POINT: " << cpList.size() << endl;
 	//cout << "LINES: " << cList.size() << endl;
-	
-
-
 }
 
 Cloth::~Cloth() {
 
 	//delete [] cpList;
-	cout << "it's cleaning up the list" << endl;
-	cpList.clear();
-	cList.clear();
+	// cout << "it's cleaning up the list" << endl;
+	// cpList.clear();
+	// cList.clear();
 }
 
-void Cloth::drawCloth(float x, float y, float z) {		
+void Cloth::drawCloth(float xx, float yy, float zz) {		
 	
+	// cout << xx << endl;
+	// cout << cpList.size() << endl;
+	// cout << y_num << endl;
 	for (int i = 0; i < x_num - 1; ++i) {
 		for (int j = 0; j < y_num - 1; ++j) {
 			// int index = j*x_num+i;
-
+			// cout << "drawing" << endl;
 			ClothParticle* cp1 = getClothParticle( i + 1, j);
 			ClothParticle* cp2 = getClothParticle( i, j);
 			ClothParticle* cp3 = getClothParticle( i, j + 1);
@@ -230,9 +246,9 @@ void Cloth::drawCloth(float x, float y, float z) {
 
 	// Draw the default sphere for collision
 	glPushMatrix();
-		glTranslatef(x, y, z);
+		glTranslatef(xx, yy, zz);
 		glutSolidSphere(.5, 20, 20); // the 20's are arbitary
-		ballLoc = Vec3f(x, y, z);
+		ballLoc = Vec3f(xx, yy, zz);
 	glPopMatrix();
 
 	// Draw the points;
@@ -247,6 +263,7 @@ void Cloth::drawCloth(float x, float y, float z) {
 
 	// Draw the fan
 	drawFan();
+
 	
 
 	
@@ -289,38 +306,40 @@ void Cloth::updateForcesAndCollision(float t) {
 	prevT = t;
 	if(simulate) {
 		
-		//add gravity to all particles
+		// add gravity to all particles
 		for(int i = 0; i < cpList.size(); i++) {
-			cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
+			cpList[i]->addAcceleration( deltaT * Vec3f( 0.0, -9.81, 0.0));
 
 		}
 
-		//add wind force to all particles
-		for(int i = 0; i < x_num - 1; i++) {
-			for(int j = 0; j < y_num - 1; j++) {
-				addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
-					Vec3f(0.6, 0.0, 0.2) * deltaT);
-				addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
-				Vec3f(0.6, 0.0, 0.2) * deltaT);
-			}
-		}
+		// //add wind force to all particles
+		// for(int i = 0; i < x_num - 1; i++) {
+		// 	for(int j = 0; j < y_num - 1; j++) {
+		// 		addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
+		// 			Vec3f(0.6, 0.0, 0.2) * deltaT);
+		// 		addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
+		// 		Vec3f(0.6, 0.0, 0.2) * deltaT);
+		// 	}
+		// }
 
-		//check that they satisfy their constraints (check 16 times)
+		// check that they satisfy their constraints (check 16 times)
 		for(int i = 0; i < 16; i++) {
 			for(int j = 0; j < cList.size(); j++) {
-				cList[j].satisfyConstraints();
+				cList[j]->satisfyConstraints();
 			}
 		}
 
 		//update positions of cloth particles
 		for(int i = 0; i < cpList.size(); i++) {
-			cpList[i].update(deltaT);
+			cpList[i]->update(deltaT);
 		}
 
 		checkForCollision();
-		drawCloth(x, y, z);
+		drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
 
 	}
+
+	// cout << cpList[5]->getPosition()[2] << endl;
 
 
 
@@ -341,14 +360,14 @@ void Cloth::checkForCollision() {
 	for (int i = 0; i < x_num ; ++i) {
 			for (int j = 0; j < y_num ; ++j) {
 				// int index = j*x_num+i;
-				Vec3f v = getClothParticle(i, j)->getPosition() - Vec3f(x, y, z);
+				Vec3f v = getClothParticle(i, j)->getPosition() - ballLoc;
 				float length = v.length();
 
 				v.normalize();
 
-				if (length < .5 + .005) // radius for sphere is fixed & threshold
+				if (length < .5 + .015) // radius for sphere is fixed & threshold
 				{
-					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *(.5-length)); // may have to normalize
+					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((.5 + .015)-length)); // may have to normalize
 				}
 
 
@@ -378,6 +397,9 @@ void Cloth::bakeParticles(float t) {
 void Cloth::startSimulation(float t)
 {
 
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// glLoadIdentity();	
 	prevT = t;
 	bake_start_time = 0;
 

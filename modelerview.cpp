@@ -239,6 +239,7 @@ void ModelerView::draw() {
 	if(cloth) {
 		// cout << "IM SIMULATING AND NOT WORKING" << endl;
 		cloth->updateForcesAndCollision(ui->getTime());
+		// model->draw();
 	}
 	// Cloth* ps = ui->getCloth();
 	// if (ps) {

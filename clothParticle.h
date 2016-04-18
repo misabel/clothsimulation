@@ -22,7 +22,8 @@ public:
 	void setPosition(Vec3f p);
 	void setVelocity(Vec3f v);
 	void updatePosition(Vec3f p) {
-		_position = _position + p;
+		if(!_isFixed)
+			_position = _position + p;
 	} 
 	Vec3f getNormal() {
 		return _accNormal;

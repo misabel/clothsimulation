@@ -913,6 +913,7 @@ void ModelerUserInterface::setModel(Model* model) {
 	this->model = model;
 	m_modelerView->setModel(model);
 
+
 	// Set particle system
 	ps = model->getParticleSystem();
 	cloth = model->getCloth();
@@ -1669,7 +1670,7 @@ void ModelerUserInterface::syncSimulate() {
 		ps->setDirty(false);
 	}
 
-	cloth = model->getCloth();
+	// cloth = model->getCloth();
 	if(cloth != NULL) {
 		// cout << "cloth is not null"  << endl;
 		bool sim = cloth->isSimulate();
@@ -1693,13 +1694,14 @@ void ModelerUserInterface::syncSimulate() {
 			// otherwise, we sync the psystem
 			// to the ui
 			else if (simulating) {
+				model->setCloth(new Cloth());
 				cloth->startSimulation(graph->currTime());
 			} else {
 				cloth->stopSimulation(graph->currTime());
+				
 			}
 		}
 		cloth->setDirty(false);
-
 	}
 }
 

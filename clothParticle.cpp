@@ -119,8 +119,8 @@ void ClothParticle::update(float t) {
 	if(!_isFixed) {
 
 		Vec3f old_pos = _position;
-
-		_position = _position + (1.0 - 0.02) * (_position - _prevPosition) + _acc * t;
+		_position = _position + (_position - _prevPosition) * (1.0 - 0.01) + _acc * (t * t);
+		// _position = _position + (1.0 - 0.02) * (_position - _prevPosition) + _acc * t;
 		_prevPosition = old_pos;
 		_acc = Vec3f(0.0);
 

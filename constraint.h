@@ -9,7 +9,7 @@ using namespace std;
 class Constraint {
 public:
 	/** Constructor **/
-	Constraint(ClothParticle p1, ClothParticle p2);
+	Constraint(ClothParticle* p1, ClothParticle* p2);
 
 	/** Destructor **/
 	virtual ~Constraint();
@@ -21,19 +21,19 @@ public:
 
 	virtual void satisfyConstraints();
 
-	virtual ClothParticle getP1() {
+	virtual ClothParticle* getP1() {
 		 return _p1;
 	}
 
-	virtual ClothParticle getP2() {
+	virtual ClothParticle* getP2() {
 		return _p2;
 	}
 
 protected:
 	// ClothParticle *p1;
 	// ClothParticle *p2;
-	ClothParticle _p1;
-	ClothParticle _p2;
+	ClothParticle *_p1;
+	ClothParticle *_p2;
 
 private: 
 	float restLength; // init distance btw two ClothParticles. 

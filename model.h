@@ -29,7 +29,7 @@ protected:
 	 * method, so it can link controls to your properties.
 	 */
 	GroupProperty properties;
-	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
+	
 	ParticleSystem* ps;
 	Cloth *cloth;
 	//Cloth* ps;
@@ -72,6 +72,7 @@ public:
 		cloth = c;
 	}
 	//virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
+	RangeProperty sphereCenterX1, sphereCenterY1, sphereCenterZ1;
 
 
 	
@@ -86,7 +87,7 @@ protected:
   /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
   				rightLowerLegTilt, mass;*/
-  	// RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ, width, length, density;
+  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 
 public:
   MyModel();

@@ -210,7 +210,7 @@ void ParticleSystem::clearBaked()
 void ParticleSystem::addParticleStartingAt(Vec4f WorldPoint){
 	// cout << "spawn point is: "<< WorldPoint[0] << ", " << WorldPoint[1] << ", " << WorldPoint[2] << endl;
 	spawnPoint = Vec3f(WorldPoint);
-	cout << "spawning at "<< spawnPoint[0] << ", " << spawnPoint[1] << ", " << spawnPoint[2] << endl;
+	// cout << "spawning at "<< spawnPoint[0] << ", " << spawnPoint[1] << ", " << spawnPoint[2] << endl;
 }
 
 

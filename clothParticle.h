@@ -45,6 +45,10 @@ public:
 	void addAcceleration( Vec3f a) {
 		_acc += a/_mass;
 	}
+
+	Vec3f getAcceleration() {
+		return _acc.length();
+	}
 	
 	// void addForce(Vec3f f);
 	// Vec3f* getState();

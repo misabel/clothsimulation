@@ -44,7 +44,7 @@ public:
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.
-	 virtual void updateForcesAndCollision(float t);
+	 virtual void updateForcesAndCollision(float t, float x, float y, float z);
 
 	 virtual void checkForCollision();
 

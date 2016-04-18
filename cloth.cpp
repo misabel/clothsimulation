@@ -14,7 +14,7 @@ static float prevT;
 
 Cloth::Cloth() {
 	simulate = false;
-	init(Vec3f(-2.0, 3.5, .3), 7.0, 7.0, 50, 50);
+	init(Vec3f(-2.0, 3.5, 2.0), 7.0, 7.0, 50, 50);
 }
 Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
@@ -225,7 +225,7 @@ void Cloth::drawCloth(float xx, float yy, float zz) {
 			};
 
 			const GLubyte indices[] = {0, 1, 2, 3, 0, 2};
-			const GLfloat colors[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0 };
+			const GLfloat colors[] = { 10, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0 };
 
 			glEnableClientState(GL_NORMAL_ARRAY);
 			glEnableClientState(GL_COLOR_ARRAY);
@@ -243,6 +243,7 @@ void Cloth::drawCloth(float xx, float yy, float zz) {
 
 	 	}
 	 }
+
 
 	// Draw the default sphere for collision
 	glPushMatrix();
@@ -300,10 +301,11 @@ Vec3f Cloth::findNormal(Vec3f p1, Vec3f p2, Vec3f p3){
 
 }
 
-void Cloth::updateForcesAndCollision(float t) {
+void Cloth::updateForcesAndCollision(float t, float x, float y, float z) {
 
 	float deltaT = t - prevT;
 	prevT = t;
+	ballLoc = Vec3f(x, y, z);
 	if(simulate) {
 		
 		// add gravity to all particles
@@ -312,15 +314,15 @@ void Cloth::updateForcesAndCollision(float t) {
 
 		}
 
-		// //add wind force to all particles
-		// for(int i = 0; i < x_num - 1; i++) {
-		// 	for(int j = 0; j < y_num - 1; j++) {
-		// 		addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
-		// 			Vec3f(0.6, 0.0, 0.2) * deltaT);
-		// 		addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
-		// 		Vec3f(0.6, 0.0, 0.2) * deltaT);
-		// 	}
-		// }
+		//add wind force to all particles
+		for(int i = 0; i < x_num - 1; i++) {
+			for(int j = 0; j < y_num - 1; j++) {
+				addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
+					Vec3f(0.6, 0.0, 0.2) * deltaT);
+				addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
+				Vec3f(0.6, 0.0, 0.2) * deltaT);
+			}
+		}
 
 		// check that they satisfy their constraints (check 16 times)
 		for(int i = 0; i < 16; i++) {
@@ -335,7 +337,8 @@ void Cloth::updateForcesAndCollision(float t) {
 		}
 
 		checkForCollision();
-		drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
+
+		drawCloth(x, y, z);
 
 	}
 
@@ -365,9 +368,9 @@ void Cloth::checkForCollision() {
 
 				v.normalize();
 
-				if (length < .5 + .015) // radius for sphere is fixed & threshold
+				if (length < .5 + .04) // radius for sphere is fixed & threshold
 				{
-					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((.5 + .015)-length)); // may have to normalize
+					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((.5 + .04)-length)); // may have to normalize
 				}
 
 
@@ -377,18 +380,6 @@ void Cloth::checkForCollision() {
 
 }
 
-// void Cloth::updateConstraintsAndParticles() {
-
-// 	for(int i = 0; i < 10; i++) {
-// 		for(int j = 0; j < cList.size(); j++) {
-// 			cList[j].satisfyConstraint();
-// 		}
-// 	}
-
-// 	for(int i = 0; i < cpList.size(); i++) {
-// 		cpList[j].update();
-// 	}
-// }
 void Cloth::bakeParticles(float t) {
 
 }

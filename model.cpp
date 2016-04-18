@@ -10,15 +10,19 @@ using namespace std;
 
 ///////////// class Model ///////////////
 Model::Model(const char* name) : properties(name),
-sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
-	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
-	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1) {
+sphereCenterX1("Cloth Sphere Center (X)", -10.0, 20.0, 2.0, 0.1),
+	sphereCenterY1("Cloth Sphere Center (Y)", -10.0, 20.0, -2.0, 0.1),
+	sphereCenterZ1("Cloth Sphere Center (Z)", -10.0, 20.0, 2.0, 0.1) {
+
+		properties.add(&sphereCenterX1)
+  	 			.add(&sphereCenterY1)
+  	 			.add(&sphereCenterZ1);
 	ps = new ParticleSystem();
 	cloth = new Cloth();
 }
 GroupProperty* Model::getProperties() { return &properties; }
 void Model::draw() {
-	cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+	// cloth->drawCloth(sphereCenterX1.getValue(), sphereCenterY1.getValue(), sphereCenterZ1.getValue());
 }
 void Model::tick() {}
 void Model::load() {}
@@ -33,18 +37,21 @@ Cloth* Model::getCloth() {
 
 
 MyModel::MyModel() :
-  	Model("Cloth")
+  	Model("Cloth"),
   	
-	// , width("Width", 1, 10, 5, 1),
-	// length("Length", 1, 10, 5, 1), 
-	// density("Polygon density", 3, 100, 50, 1)
+	sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
+	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
+	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
   {
   	 // properties.add(&sphereCenterX)
   	 // 			.add(&sphereCenterY)
-  	 // 			.add(&sphereCenterZ)
+  	 // 			.add(&sphereCenterZ);
   		// 		.add(&width)
   	 // 			.add(&length)
   	 // 			.add(&density);
+
+
+
   	 		
 
 
@@ -53,6 +60,10 @@ MyModel::MyModel() :
 
 void MyModel::draw() {
 
+	// cloth->drawCloth(sphereCenterX.getValue(), sphereCenterY.getValue(), sphereCenterZ.getValue());
+	// sphereCenterX1.setValue(sphereCenterX.getValue());
+ //  	sphereCenterY1.setValue(sphereCenterY.getValue());
+ //  	sphereCenterZ1.setValue(sphereCenterZ.getValue());
 	// delete cloth;
 	// cloth = new Cloth(Vec3f(-2.0, 3.5, .3), width.getValue(), length.getValue(), density.getValue(), density.getValue());
 	// float x = sphereCenterX;

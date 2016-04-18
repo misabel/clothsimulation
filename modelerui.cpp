@@ -738,7 +738,7 @@ ModelerUserInterface::ModelerUserInterface() {
 					}
 
 					// Particle system buttons
-					{ particlePane = new Fl_Group(255, 575, 540, 20, "Particle System");
+					{ particlePane = new Fl_Group(255, 575, 540, 20, "Cloth Simulation");
 						// Put particle system label inside
 						particlePane->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
 						particlePane->labelfont(FL_HELVETICA_BOLD);

@@ -1,3 +1,4 @@
+// Thanks to "Advanced Character Physics" written by Thomas Jakobsen
 #ifndef __CONSTRAINT_H__
 #define __CONSTRAINT_H__
 

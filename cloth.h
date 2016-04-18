@@ -1,3 +1,4 @@
+// Thanks to "Advanced Character Physics" written by Thomas Jakobsen
 #ifndef __CLOTH_H__
 #define __CLOTH_H__
 

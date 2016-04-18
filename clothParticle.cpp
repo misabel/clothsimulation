@@ -1,3 +1,4 @@
+// Thanks to "Advanced Character Physics" written by Thomas Jakobsen
 #include "clothParticle.h"
 
 

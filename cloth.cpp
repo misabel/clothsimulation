@@ -14,13 +14,13 @@ static float prevT;
 
 Cloth::Cloth() {
 	simulate = false;
-	init(Vec3f(-2.0, 3.5, 2.0), 7.0, 7.0, 50, 50);
+	init(Vec3f(0, 0, 0), 7.0, 7.0, 50, 50);
+	// init(Vec3f(-2.0, 3.5, 2.0), 15.0, 15.0, 15, 15);
 }
 Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
 	// Create grid: origin->(width*x_num, -height*y_num, 0)
 	init(origin, width, height, x, y);
-	
 
 
 }
@@ -135,7 +135,7 @@ void Cloth::init(Vec3f origin, float width, float height, int x, int y) {
 		}
 	}
 
-	drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
+	//drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
 	// // Connect particles: bending constraint
 	// for (int i = 0; i < x_num; ++i)
 	// {
@@ -252,18 +252,18 @@ void Cloth::drawCloth(float xx, float yy, float zz) {
 		ballLoc = Vec3f(xx, yy, zz);
 	glPopMatrix();
 
-	// Draw the points;
-	 // for(int i = 0; i < cpList.size(); i++) {
-	 // 	cpList[i].drawClothParticle();
-	 // }
+	// // Draw the points;
+	//  for(int i = 0; i < cpList.size(); i++) {
+	//  	cpList[i]->drawClothParticle();
+	//  }
 
 	// // Draw the constraints
 	// for (int i = 0; i < cList.size(); i++) {
-	// 	cList[i].drawConstraint();
+	// 	cList[i]->drawConstraint();
 	// }
 
 	// Draw the fan
-	drawFan();
+	//drawFan();
 
 	
 
@@ -301,26 +301,44 @@ Vec3f Cloth::findNormal(Vec3f p1, Vec3f p2, Vec3f p3){
 
 }
 
-void Cloth::updateForcesAndCollision(float t, float x, float y, float z) {
+void Cloth::updateForcesAndCollision(float t, float x, float y, float z, float v, int num) {
 
 	float deltaT = t - prevT;
 	prevT = t;
 	ballLoc = Vec3f(x, y, z);
+	windV = v;
+	windDir = num; // case number: 1 2 3 4 represent direction cases: in, out, left, right
+	Vec3f dir;
 	if(simulate) {
 		
 		// add gravity to all particles
 		for(int i = 0; i < cpList.size(); i++) {
-			cpList[i]->addAcceleration( deltaT * Vec3f( 0.0, -9.81, 0.0));
+			cpList[i]->addAcceleration(Vec3f( 0.0, -9.81, 0.0) * deltaT);
 
 		}
 
-		//add wind force to all particles
+		// //add wind force to all particles
+		//cout << "WIND SPEED IS: " << windV << endl;
 		for(int i = 0; i < x_num - 1; i++) {
 			for(int j = 0; j < y_num - 1; j++) {
+				switch (windDir) {
+					case 1: // direction is in
+						dir = Vec3f(0.0, 0.0, -1.0);
+						break;
+					case 2: // direction is out
+						dir = Vec3f(0.0, 0.0, 1.0);
+						break;
+					case 3: // direction is left
+						dir = Vec3f(1.0, 0.0, 0.0);
+						break;
+					case 4: // right
+						dir = Vec3f(-1.0, 0.0, 0.0);
+						break;
+				}
 				addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
-					Vec3f(0.6, 0.0, 0.2) * deltaT);
+				dir * deltaT * windV);
 				addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
-				Vec3f(0.6, 0.0, 0.2) * deltaT);
+				dir * deltaT * windV);
 			}
 		}
 
@@ -353,7 +371,7 @@ void Cloth::addWind(ClothParticle* p1, ClothParticle* p2, ClothParticle* p3, Vec
 	Vec3f n = calculateNormal(p1->getPosition(), p2->getPosition(), p3->getPosition());
 	Vec3f direction = n;
 	direction.normalize();
-	Vec3f acc = n * (direction * dir);
+	Vec3f acc = n * (direction * dir) * 50;
 	p1->addAcceleration(acc);
 	p2->addAcceleration(acc);
 	p3->addAcceleration(acc);
@@ -371,7 +389,9 @@ void Cloth::checkForCollision() {
 				if (length < .5 + .04) // radius for sphere is fixed & threshold
 				{
 					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((.5 + .04)-length)); // may have to normalize
+					//getClothParticle(i, j)->updatePosition(v*(.5-length));
 				}
+
 
 
 			}

@@ -12,11 +12,15 @@ using namespace std;
 Model::Model(const char* name) : properties(name),
 sphereCenterX1("Cloth Sphere Center (X)", -10.0, 20.0, 2.0, 0.1),
 	sphereCenterY1("Cloth Sphere Center (Y)", -10.0, 20.0, -2.0, 0.1),
-	sphereCenterZ1("Cloth Sphere Center (Z)", -10.0, 20.0, 2.0, 0.1) {
+	sphereCenterZ1("Cloth Sphere Center (Z)", -10.0, 20.0, 2.0, 0.1)
+	, windSpeed("Fan Speed", 1, 50, 1, 1)
+	, windDir("Wind Direction", 1, 4, 1, 1) {
 
 		properties.add(&sphereCenterX1)
   	 			.add(&sphereCenterY1)
-  	 			.add(&sphereCenterZ1);
+  	 			.add(&sphereCenterZ1)
+  	 			.add(&windSpeed)
+  	 			.add(&windDir);
 	ps = new ParticleSystem();
 	cloth = new Cloth();
 }
@@ -37,11 +41,10 @@ Cloth* Model::getCloth() {
 
 
 MyModel::MyModel() :
-  	Model("Cloth"),
-  	
-	sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
-	sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
-	sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
+  	Model("Cloth")
+  	// , sphereCenterX("Collision Sphere Center (X)", -6.0, 6.0, 2.0, 0.1),
+	// sphereCenterY("Collision Sphere Center (Y)", -6.0, 6.0, -2.0, 0.1),
+	// sphereCenterZ("Collision Sphere Center (Z)", -6.0, 6.0, 2.0, 0.1)
   {
   	 // properties.add(&sphereCenterX)
   	 // 			.add(&sphereCenterY)

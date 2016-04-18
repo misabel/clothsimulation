@@ -16,6 +16,8 @@ private:
 		std::vector<Constraint*> cList;
 		Vec3f ballLoc = Vec3f(2.0f, -2.0f, 2.0f); // get init in model.cpp
 		void init(Vec3f origin, float width, float height, int x, int y);
+		float windV;
+		int windDir;
 
 		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 		// float x, y, z;
@@ -44,7 +46,7 @@ public:
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.
-	 virtual void updateForcesAndCollision(float t, float x, float y, float z);
+	 virtual void updateForcesAndCollision(float t, float x, float y, float z, float v, int windDirNum);
 
 	 virtual void checkForCollision();
 

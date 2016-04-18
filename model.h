@@ -72,7 +72,7 @@ public:
 		cloth = c;
 	}
 	//virtual void updateForcesAndCollision(float t, Vec3f sphereLoc);
-	RangeProperty sphereCenterX1, sphereCenterY1, sphereCenterZ1;
+	RangeProperty sphereCenterX1, sphereCenterY1, sphereCenterZ1, windSpeed, windDir;
 
 
 	
@@ -87,7 +87,7 @@ protected:
   /*RangeProperty headRotation, leftUpperArmTilt, leftLowerArmTilt, rightUpperArmTilt,
   				rightLowerArmTilt, leftUpperLegTilt, leftLowerLegTilt, rightUpperLegTilt,
   				rightLowerLegTilt, mass;*/
-  	RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
+  	//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
 
 public:
   MyModel();

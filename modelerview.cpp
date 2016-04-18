@@ -239,7 +239,8 @@ void ModelerView::draw() {
 	if(cloth && cloth->isSimulate()) {
 		// cout << "IM SIMULATING AND NOT WORKING" << endl;
 		// cout << model->sphereCenterX1.getValue() << "   lasdfl" << endl;
-		cloth->updateForcesAndCollision(ui->getTime(), model->sphereCenterX1.getValue(),model->sphereCenterY1.getValue(), model->sphereCenterZ1.getValue() );
+		cloth->updateForcesAndCollision(ui->getTime(), model->sphereCenterX1.getValue(),
+			model->sphereCenterY1.getValue(), model->sphereCenterZ1.getValue(), model->windSpeed.getValue(), model->windDir.getValue());
 		// model->draw();
 	}
 	else {

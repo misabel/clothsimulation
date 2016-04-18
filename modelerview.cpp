@@ -236,11 +236,14 @@ void ModelerView::draw() {
 
 	Cloth* cloth = ui->getCloth();
 
-	if(cloth) {
+	if(cloth && cloth->isSimulate()) {
 		// cout << "IM SIMULATING AND NOT WORKING" << endl;
 		// cout << model->sphereCenterX1.getValue() << "   lasdfl" << endl;
 		cloth->updateForcesAndCollision(ui->getTime(), model->sphereCenterX1.getValue(),model->sphereCenterY1.getValue(), model->sphereCenterZ1.getValue() );
 		// model->draw();
+	}
+	else {
+		cloth->draw();
 	}
 	// Cloth* ps = ui->getCloth();
 	// if (ps) {

@@ -1431,6 +1431,11 @@ void ModelerUserInterface::play() {
 		rewind();
 	}
 
+	model->setCloth(new Cloth());
+
+	cloth = model->getCloth();
+	cloth->setSimulate(true);
+
 	// Start playing
 	animating = true;
 
@@ -1442,6 +1447,7 @@ void ModelerUserInterface::play() {
 void ModelerUserInterface::playOrStop() {
 	if (animating) {
 		stop();
+		cloth->setSimulate(false);
 	} else {
 		play();
 	}
@@ -1449,6 +1455,8 @@ void ModelerUserInterface::playOrStop() {
 
 void ModelerUserInterface::rewind() {
 	stop();
+	model->setCloth(new Cloth());
+	cloth = model->getCloth();
 	setTime(0);
 }
 

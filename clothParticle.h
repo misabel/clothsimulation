@@ -49,6 +49,10 @@ public:
 	Vec3f getAcceleration() {
 		return _acc.length();
 	}
+
+	void setFixed(bool f) {
+		_isFixed = f;
+	}
 	
 	// void addForce(Vec3f f);
 	// Vec3f* getState();

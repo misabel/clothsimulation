@@ -9,12 +9,14 @@
 
 using namespace std;
 
-
+#define RADIUS 1.5
+#define COLLISION_THRESHOLD 0.1
 static float prevT;
 
 Cloth::Cloth() {
 	simulate = false;
-	init(Vec3f(-2.0, 3.5, 2.0), 7.0, 7.0, 50, 50);
+	init(Vec3f(-2.0, 3.5, 2.0), 13.0, 10.0, 50, 50);
+	// drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
 }
 Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 
@@ -46,12 +48,12 @@ void Cloth::init(Vec3f origin, float width, float height, int x, int y) {
 						origin[2]); // reset z
 
 			//pin three top left points and three top right points
-			 if (j == 0 && (i < 4 || i > y_num - 4) ){
-			 	// || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
-			 	cpList.push_back(new ClothParticle(pos, true));
-			} else {
+			//  if (j == 0 && (i < 4 || i > y_num - 4) ){
+			//  	// || (i == 0 && j == y_num - 1) || (i ==x_num - 1 && j == y_num - 1)) {
+			//  	cpList.push_back(new ClothParticle(pos, true));
+			// } else {
 				cpList.push_back(new ClothParticle(pos, false));
-			}
+			// }
 
 			//cout << pos << endl;
 
@@ -135,6 +137,13 @@ void Cloth::init(Vec3f origin, float width, float height, int x, int y) {
 		}
 	}
 
+	for(int i = 0; i < x_num; i++) {
+		for(int j = 0; j < y_num; j++) {
+			if(j == 0 && (i < 4 || i > x_num - 4)){
+				getClothParticle(i, j)->setFixed(true);
+			}
+		}
+	}
 	drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
 	// // Connect particles: bending constraint
 	// for (int i = 0; i < x_num; ++i)
@@ -248,7 +257,7 @@ void Cloth::drawCloth(float xx, float yy, float zz) {
 	// Draw the default sphere for collision
 	glPushMatrix();
 		glTranslatef(xx, yy, zz);
-		glutSolidSphere(.5, 20, 20); // the 20's are arbitary
+		glutSolidSphere(RADIUS, 20, 20); // the 20's are arbitary
 		ballLoc = Vec3f(xx, yy, zz);
 	glPopMatrix();
 
@@ -263,13 +272,16 @@ void Cloth::drawCloth(float xx, float yy, float zz) {
 	// }
 
 	// Draw the fan
-	drawFan();
+	// drawFan();
 
 	
 
 	
 }
 
+void Cloth::draw() {
+	drawCloth(ballLoc[0], ballLoc[1], ballLoc[2]);
+}
 // void Cloth::drawCloth() {
 // 	drawCloth(x, y, z);
 // }
@@ -368,9 +380,9 @@ void Cloth::checkForCollision() {
 
 				v.normalize();
 
-				if (length < .5 + .04) // radius for sphere is fixed & threshold
+				if (length < RADIUS + COLLISION_THRESHOLD) // radius for sphere is fixed & threshold
 				{
-					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((.5 + .04)-length)); // may have to normalize
+					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *((RADIUS + COLLISION_THRESHOLD)-length)); // may have to normalize
 				}
 
 
@@ -388,8 +400,8 @@ void Cloth::bakeParticles(float t) {
 void Cloth::startSimulation(float t)
 {
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// glClearColor(0.0f, 0.0f, 0.0f, 1.0f );
+	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// glLoadIdentity();	
 	prevT = t;
 	bake_start_time = 0;
@@ -410,6 +422,7 @@ void Cloth::startSimulation(float t)
 void Cloth::stopSimulation(float t)
 {
 	// These values are used by the UI
+	prevT = t;
 	simulate = false;
 	dirty = true;
 
@@ -419,6 +432,7 @@ void Cloth::stopSimulation(float t)
 void Cloth::resetSimulation(float t)
 {
 	bake_start_time = 0;
+	prevT = t;
 
 	// These values are used by the UI
 	simulate = false;

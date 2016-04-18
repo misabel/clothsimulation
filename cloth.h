@@ -14,7 +14,7 @@ private:
 		int y_num;
 		std::vector<ClothParticle*> cpList;
 		std::vector<Constraint*> cList;
-		Vec3f ballLoc = Vec3f(2.0f, -2.0f, 2.0f); // get init in model.cpp
+		Vec3f ballLoc = Vec3f(-2.0, -2.5, 0.0); // get init in model.cpp
 		void init(Vec3f origin, float width, float height, int x, int y);
 
 		//RangeProperty sphereCenterX, sphereCenterY, sphereCenterZ;
@@ -39,6 +39,8 @@ public:
 	// This fxn should render all particles in the system,
 	// at current time t.
 	virtual void drawCloth(float x, float y, float z);
+	
+	virtual void draw();
 
 	// virtual void drawCloth();
 
@@ -88,6 +90,9 @@ public:
 	float getBakeEndTime() { return bake_end_time; }
 	float getBakeFps() { return bake_fps; }
 	bool isSimulate() { return simulate; }
+	void setSimulate(bool b) {
+		simulate = b;
+	}
 	bool isDirty() { return dirty; }
 	void setDirty(bool d) { dirty = d; }
 

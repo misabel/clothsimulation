@@ -22,7 +22,7 @@ sphereCenterX1("Cloth Sphere Center (X)", -10.0, 20.0, 2.0, 0.1),
 }
 GroupProperty* Model::getProperties() { return &properties; }
 void Model::draw() {
-	// cloth->drawCloth(sphereCenterX1.getValue(), sphereCenterY1.getValue(), sphereCenterZ1.getValue());
+	cloth->drawCloth(sphereCenterX1.getValue(), sphereCenterY1.getValue(), sphereCenterZ1.getValue());
 }
 void Model::tick() {}
 void Model::load() {}

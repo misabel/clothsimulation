@@ -100,12 +100,12 @@ public:
 
 		// Call the constructors for the lights
 		spotLight("Spot Light", GL_LIGHT2, /**direction part**/ -5, 5, 5, /**diffuse part**/ 1.0, 0.0, 0.9, 
-		/**specular part**/ 1.0, 0.5, 0.5, /**ambient part**/ .2f, 0.1, 0.1 /**attenuation part**/, 0.4, 0.7, 0,
+		/**specular part**/ 1.0, 0.5, 0.5, /**ambient part**/ .2f, 0.1, 0.1 /**attenuation part**/, 0.65, 0.33, 0.38,
 		/**spotX/Y/Z part**/ -7, 10, 8, /**spotlight angle**/ 5, 30 ),
-		pointLight("Point Light", GL_LIGHT1, /**direction part**/ -5, 5, 5, /**diffuse part**/ 1.0, 0.5, 0.5, 
-		/**specular part**/ 1.0, 0.5, 0.5, /**ambient part**/ .2f, 0.1, 0.1 /**attenuation part**/, 0.4, 0.7, 0),
-		directionalLight("Directional Light", GL_LIGHT0, /**direction part**/ 5, 5, 5, /**diffuse part**/ 0.0f, 0.5, 0.5f, 
-		/**specular part**/ 0.0f, 0.5f, 0.5f )
+		pointLight("Point Light", GL_LIGHT1, /**direction part**/ 0.54, -0.54, -3.29, /**diffuse part**/ 0.666, 0.940, 1.0, 
+		/**specular part**/ 1.0, 0.409, 0.550, /**ambient part**/ .740f, 0.246, 0.290 /**attenuation part**/, 0.4, 0.7, 0),
+		directionalLight("Directional Light", GL_LIGHT0, /**direction part**/ 5, 5, 5, /**diffuse part**/ 0.5f, 0.071f, 0.172f, 
+		/**specular part**/ 0.289f, 0.75f, 0.0f )
 
 		// Now, call the constructors for each Property:
 		, useTexture("Use Checkered Texture", true),

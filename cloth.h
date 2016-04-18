@@ -46,6 +46,8 @@ public:
 
 	 virtual void checkForCollision();
 
+	 virtual void addWind(ClothParticle* p1, ClothParticle* p2, ClothParticle* p3, Vec3f dir);
+
 	 // virtual void updateConstraintsAndParticles();
 
 	 virtual void drawFan();

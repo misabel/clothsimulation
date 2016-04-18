@@ -33,6 +33,7 @@ public:
 	}
 	void addNormal (Vec3f n){
 
+		n.normalize();
 		_accNormal = _accNormal + n;
 	}
 

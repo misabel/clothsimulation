@@ -45,13 +45,39 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 	}
 
 // Connect particles: structural constraint & shear constraint 
-	for (int i = 0; i < x_num; i++)
-	{
-		for (int j = 0; j < y_num; j++)
-		{
-			// int curIndex = j*x_num+i;
-			// int index; // particle need to connect to the current particle 
-			// int index2;
+	// for (int i = 0; i < x_num; i++)
+	// {
+	// 	for (int j = 0; j < y_num; j++)
+	// 	{
+	// 		// int curIndex = j*x_num+i;
+	// 		// int index; // particle need to connect to the current particle 
+	// 		// int index2;
+	// 		if (i < x_num - 1) {
+	// 			// index = j*x_num+i+1;
+	// 			// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 			cList.push_back(Constraint( getClothParticle(i, j), getClothParticle(i + 1, j)));
+	// 		}
+	// 		if (j < y_num - 1) {
+	// 			// index = (j+1)*x_num+i;
+	// 			// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 			cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i, j + 1)));
+	// 		}
+	// 		if (i < x_num - 1 && j < y_num - 1) {
+	// 			// index = (j+1)*x_num+i+1;
+	// 			// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
+	// 			cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 1, j + 1)));
+	// 			// index = (j)*x_num+i+1;
+	// 			// index2 = (j+1)*x_num+i;
+	// 			// cList.push_back(Constraint(cpList[index], cpList[index2]));
+	// 			cList.push_back(Constraint(getClothParticle(i + 1, j), getClothParticle(i, j + 1)));
+	// 		}
+
+			
+	// 	}
+	// }
+
+	for(int i = 0; i < x_num; i++) {
+		for(int j = 0; j < y_num; j++) {
 			if (i < x_num - 1) {
 				// index = j*x_num+i+1;
 				// cList.push_back(Constraint(cpList[curIndex], cpList[index]));
@@ -71,7 +97,11 @@ Cloth::Cloth(Vec3f origin, float width, float height, int x, int y) {
 				// cList.push_back(Constraint(cpList[index], cpList[index2]));
 				cList.push_back(Constraint(getClothParticle(i + 1, j), getClothParticle(i, j + 1)));
 			}
+		}
+	}
 
+	for(int i = 0; i < x_num; i++) {
+		for(int j = 0; j < y_num; j++) {
 			if (i < x_num - 2) {
 				// index = j*x_num+i+2;
 				cList.push_back(Constraint(getClothParticle(i, j), getClothParticle(i + 2, j)));
@@ -163,38 +193,6 @@ void Cloth::drawCloth(float x, float y, float z) {
    			Vec3f n2 = cp2->getNormal();
    			Vec3f n3 = cp3->getNormal();
    			Vec3f n4 = cp4->getNormal();
-
-
-			// Vec3f p1 = cpList[index].getPosition();
-
-			// index = (j+1)*x_num+i;
-
-			// Vec3f p2 = cpList[index].getPosition();
-
-			// index = (j+1)*x_num+i+1;
-
-			// Vec3f p3 = cpList[index].getPosition();
-
-			// index = j*x_num+i+1;
-			
-			// Vec3f p4 = cpList[index].getPosition();
-
-			// Vec3f n1 = Vec3f(0.0);
-			// Vec3f n2 = Vec3f(0.0);
-			// Vec3f n3 = Vec3f(0.0);
-			// Vec3f n4 = Vec3f(0.0);
-
-			// Vec3f normal = findNormal(p3, p1, p2);
-
-			// n3 += normal;
-			// n1 += normal;
-			// n2 += normal;
-
-			// normal = findNormal(p4, p3, p2);
-
-			// n4 += normal;
-			// n3 += normal;
-			// n2 += normal;
 
 			const GLfloat vertices[] = {
 			 	p1[0], p1[1], p1[2],    
@@ -291,25 +289,36 @@ void Cloth::updateForcesAndCollision(float t) {
 	prevT = t;
 	if(simulate) {
 		
-		// //add gravity to all particles
-		// for(int i = 0; i < cpList.size(); i++) {
-		// 	cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
+		//add gravity to all particles
+		for(int i = 0; i < cpList.size(); i++) {
+			cpList[i].addAcceleration( deltaT * Vec3f( 0.0, -0.2, 0.0));
 
-		// }
+		}
 
-		// //check that they satisfy their constraints
-		// for(int i = 0; i < 10; i++) {
-		// 	for(int j = 0; j < cList.size(); j++) {
-		// 		cList[j].satisfyConstraints();
-		// 	}
-		// }
+		//add wind force to all particles
+		for(int i = 0; i < x_num - 1; i++) {
+			for(int j = 0; j < y_num - 1; j++) {
+				addWind(getClothParticle(i + 1, j), getClothParticle(i, j), getClothParticle(i, j + 1),
+					Vec3f(0.6, 0.0, 0.2) * deltaT);
+				addWind(getClothParticle(i + 1, j + 1), getClothParticle(i + 1, j), getClothParticle(i, j + 1),
+				Vec3f(0.6, 0.0, 0.2) * deltaT);
+			}
+		}
 
-		// //update positions of cloth particles
-		// for(int i = 0; i < cpList.size(); i++) {
-		// 	cpList[i].update(deltaT);
-		// }
+		//check that they satisfy their constraints (check 16 times)
+		for(int i = 0; i < 16; i++) {
+			for(int j = 0; j < cList.size(); j++) {
+				cList[j].satisfyConstraints();
+			}
+		}
+
+		//update positions of cloth particles
+		for(int i = 0; i < cpList.size(); i++) {
+			cpList[i].update(deltaT);
+		}
 
 		checkForCollision();
+		drawCloth(x, y, z);
 
 	}
 
@@ -317,22 +326,35 @@ void Cloth::updateForcesAndCollision(float t) {
 
 }
 
+void Cloth::addWind(ClothParticle* p1, ClothParticle* p2, ClothParticle* p3, Vec3f dir){
+
+	Vec3f n = calculateNormal(p1->getPosition(), p2->getPosition(), p3->getPosition());
+	Vec3f direction = n;
+	direction.normalize();
+	Vec3f acc = n * (direction * dir);
+	p1->addAcceleration(acc);
+	p2->addAcceleration(acc);
+	p3->addAcceleration(acc);
+}
+
 void Cloth::checkForCollision() {
-	for (int i = 0; i < x_num - 1; ++i) {
-			for (int j = 0; j < y_num - 1; ++j) {
+	for (int i = 0; i < x_num ; ++i) {
+			for (int j = 0; j < y_num ; ++j) {
 				// int index = j*x_num+i;
 				Vec3f v = getClothParticle(i, j)->getPosition() - Vec3f(x, y, z);
 				float length = v.length();
 
+				v.normalize();
+
 				if (length < .5 + .005) // radius for sphere is fixed & threshold
 				{
-					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v*(.5-length)); // may have to normalize
+					getClothParticle(i, j)->setPosition(getClothParticle(i, j)->getPosition() + v *(.5-length)); // may have to normalize
 				}
 
 
 			}
 		}
-		drawCloth(x, y, z);
+		
 
 }
 
